@@ -11,8 +11,8 @@ import styles from './burger-constructor.module.css';
 import data from '../../utils/data';
 
 function BurgerConstructor() {
-    const top = data.filter((i) => i.type === 'bun')[0];
-    const bottom = data.filter((i) => i.type === 'bun')[1];
+    const top = data.find((i) => i._id === '60666c42cc7b410027a1a9b1');
+    const bottom = top;
     return (
         <section
             className={`${styles.container} text text_type_main-default pt-25`}
@@ -21,7 +21,7 @@ function BurgerConstructor() {
                 <ConstructorElement
                     type="top"
                     isLocked
-                    text={top.name}
+                    text={`${top.name} (верх)`}
                     price={top.price}
                     thumbnail={top.image}
                 />
@@ -44,7 +44,7 @@ function BurgerConstructor() {
                 <ConstructorElement
                     type="bottom"
                     isLocked
-                    text={bottom.name}
+                    text={`${bottom.name} (низ)`}
                     price={bottom.price}
                     thumbnail={bottom.image}
                 />
@@ -54,7 +54,7 @@ function BurgerConstructor() {
                     <Price value={610} big />
                 </div>
                 <div>
-                    <Button type="primary" size="large">
+                    <Button type="primary" size="large" htmlType="button">
                         Оформить заказ
                     </Button>
                 </div>

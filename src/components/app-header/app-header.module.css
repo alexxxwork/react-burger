@@ -6,7 +6,6 @@
     height: 88px;
     width: 100%;
     background: #1c1c21;
-    border: 2px solid #4c4cff;
 }
 
 .header-container {
@@ -53,12 +52,6 @@
 }
 .login {
     display: inline-flex;
-    justify-content: end;
+    justify-content: flex-end;
     flex-grow: 2;
-}
-/* interface/modal-bg */
-
-/* interface/accent */
-.additional {
-    border: 2px solid #4c4cff;
 }

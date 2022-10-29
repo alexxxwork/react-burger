@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-//  import App from './App';
-import Main from './components/main/main';
+import App from './components/app/app';
 // import reportWebVitals from './reportWebVitals.ts';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
+    // eslint-disable-next-line react/jsx-filename-extension
     <React.StrictMode>
-        <Main />
+        <App />
     </React.StrictMode>
 );
 

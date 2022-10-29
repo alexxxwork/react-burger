@@ -13,7 +13,6 @@ function BurgerIngredients() {
                 Соберите бургер
             </div>
             <div className={`${styles.tab}`}>
-                {' '}
                 <Tab
                     value="buns"
                     active={current === 'buns'}
