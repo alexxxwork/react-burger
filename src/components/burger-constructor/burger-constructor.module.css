@@ -1,11 +1,13 @@
 .container {
     display: flex;
     flex-wrap: wrap;
+    flex-grow: 1;
     max-width: 600px;
-    justify-content: center;
+    justify-content: right;
     margin-bottom: 40px;
     margin-top: -2px;
     border: 2px solid #4c4cff;
+    height: 912px;
 }
 .header {
     display: inline-flex;
@@ -23,20 +25,46 @@
     text-align: center;
     vertical-align: middle;
     width: 100%;
-    line-height: 30px;
-    font-size: 24px;
 }
 .tab {
-    display: flex;
-    height: 56px;
+    display: inline-flex;
 }
 .cards {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
     width: 100%;
     overflow-y: auto;
-    height: 716px;
+    height: 560px;
+}
+.topcards {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+    justify-items: flex-end;
+    width: 536px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+}
+.clist {
+    display: flex;
+}
+.order {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 90px;
+    margin-right: 16px;
+}
+.element {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: 568px;
+    margin-right: 8px;
 }
 .cards::-webkit-scrollbar {
     width: 8px;

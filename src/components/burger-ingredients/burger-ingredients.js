@@ -1,17 +1,19 @@
 import React from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import Price from '../price/price';
+// import Price from '../price/price';
+import Card from '../card/card';
 import styles from './burger-ingredients.module.css';
 import data from '../../utils/data';
 
 function BurgerIngredients() {
-    const [current, setCurrent] = React.useState('one');
+    const [current, setCurrent] = React.useState('buns');
     return (
         <section className={styles.container}>
             <div className={`${styles.header} text text_type_main-default`}>
                 Соберите бургер
             </div>
-            <div className={`${styles.tab} mb-10`}>
+            <div className={`${styles.tab}`}>
+                {' '}
                 <Tab
                     value="buns"
                     active={current === 'buns'}
@@ -35,19 +37,39 @@ function BurgerIngredients() {
                 </Tab>
             </div>
             <div className={`${styles.cards} text text_type_main-default`}>
+                <div
+                    className={`${styles.section} text text_type_main-default mb-6 mt-10`}
+                >
+                    Булки
+                </div>
+
                 {data
-                    //     .filter((i) => i.type === 'bun')
+                    .filter((i) => i.type === 'bun')
                     .map((i) => (
                         // eslint-disable-next-line no-underscore-dangle
-                        <React.Fragment key={i._id}>
-                            <div className={`${styles.card} m-4`}>
-                                <img src={i.image} alt="element" />
-                                <div className={styles.card_text}>
-                                    <Price value={i.price} />
-                                </div>
-                                <div className={styles.card_text}>{i.name}</div>
-                            </div>
-                        </React.Fragment>
+                        <Card item={i} key={i._id} />
+                    ))}
+                <div
+                    className={`${styles.section} text text_type_main-default mb-6 mt-10`}
+                >
+                    Соусы
+                </div>
+                {data
+                    .filter((i) => i.type === 'sauce')
+                    .map((i) => (
+                        // eslint-disable-next-line no-underscore-dangle
+                        <Card item={i} key={i._id} />
+                    ))}
+                <div
+                    className={`${styles.section} text text_type_main-default mb-6 mt-10`}
+                >
+                    Начинки
+                </div>
+                {data
+                    .filter((i) => i.type === 'main')
+                    .map((i) => (
+                        // eslint-disable-next-line no-underscore-dangle
+                        <Card item={i} key={i._id} />
                     ))}
             </div>
         </section>

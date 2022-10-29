@@ -1,0 +1,13 @@
+.card_text {
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-width: 272px;
+}
