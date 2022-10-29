@@ -8,8 +8,9 @@ const headerPropTypes = PropTypes.shape({
 }); 
 */
 function HeaderElement(props) {
-    const vars = props;
-    return <div className={styles.header_element}>{vars.children}</div>;
+    // eslint-disable-next-line react/prop-types
+    const { children } = props;
+    return <div className={styles.header_element}>{children}</div>;
 }
 /*
 HeaderElement.propTypes = {

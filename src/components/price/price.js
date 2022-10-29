@@ -4,13 +4,13 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import styles from './price.module.css';
 
 function Price(props) {
-    const vars = props;
+    const { value, big } = props;
     let textStyle = ' text ';
-    if (vars.big) textStyle += 'text_type_digits-medium';
+    if (big) textStyle += 'text_type_digits-medium';
     else textStyle += 'text_type_digits-default';
     return (
         <div className={styles.block}>
-            <div className={`${styles.element}${textStyle}`}>{vars.value}</div>
+            <div className={`${styles.element}${textStyle}`}>{value}</div>
             <div className={styles.element}>
                 <CurrencyIcon type="primary" className={styles.icon} />
             </div>
