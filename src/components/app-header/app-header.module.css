@@ -1,15 +1,18 @@
 .header {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     gap: 8px 8px;
     height: 88px;
     width: 100%;
     background: #1c1c21;
 }
 
-.header-container {
+.header_container {
     display: flex;
+    max-width: 1280px;
+    flex-grow: 1;
+    justify-content: center;
 }
 .header_element {
     display: flex;
@@ -18,20 +21,21 @@
     display: inline-flex;
     flex-grow: 1;
     justify-content: center;
+    flex-basis: 320px;
 }
 .left_block {
     display: inline-flex;
     justify-content: left;
     flex-grow: 1;
-    margin-left: 320px;
     align-items: center;
+    flex-basis: 320px;
 }
 .right_block {
     display: inline-flex;
     justify-content: right;
     flex-grow: 1;
-    margin-right: 320px;
     align-items: center;
+    flex-basis: 320px;
 }
 .element {
     align-content: center;
@@ -48,10 +52,12 @@
 }
 .logo {
     display: inline-flex;
-    align-self: center;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
 }
 .login {
     display: inline-flex;
     justify-content: flex-end;
-    flex-grow: 2;
+    flex-grow: 1;
 }
