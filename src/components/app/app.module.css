@@ -1,0 +1,7 @@
+.main {
+    display: inline-flex;
+    justify-content: center;
+    align-content: center;
+    gap: 40px;
+    width: 100%;
+}

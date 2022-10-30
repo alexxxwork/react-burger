@@ -1,0 +1,11 @@
+.element {
+    display: inline-flex;
+    align-items: center;
+    margin: 0px;
+    margin-left: 4px;
+}
+.block {
+    display: inline-flex;
+    height: 24px;
+    margin: 4px;
+}
