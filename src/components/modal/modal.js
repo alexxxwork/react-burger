@@ -11,13 +11,12 @@ function Modal(props) {
     const { children, text, onClose } = props;
     const modalRoot = document.getElementById('modal');
 
-    const onPressEsc = (e) => {
-        if (e.key === 'Escape') {
-            onClose();
-        }
-    };
-
     useEffect(() => {
+        const onPressEsc = (e) => {
+            if (e.key === 'Escape') {
+                onClose();
+            }
+        };
         document.addEventListener('keydown', onPressEsc);
         return () => document.removeEventListener('keydown', onPressEsc);
     }, []);
@@ -45,6 +44,6 @@ Modal.propTypes = {
     text: PropTypes.string,
 };
 Modal.defaultProps = {
-    text: 'Детали ингридиента',
+    text: '',
 };
 export default Modal;

@@ -1,74 +1,22 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState } from 'react';
-// import PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import Price from '../price/price';
 import ingridientType from '../../utils/types';
-import Modal from '../modal/modal';
+// import Modal from '../modal/modal';
 import styles from './card.module.css';
+// import IngredientDetails from '../ingredient-details/ingredient-details';
 
-function Card({ item }) {
-    const [showModal, SetShowModal] = useState(false);
-    const toggleDetails = () => {
-        SetShowModal((prevState) => !prevState);
-    };
-    const closeDetails = () => {
-        SetShowModal(false);
-    };
+function Card({ item, onClick }) {
     return (
         <div className={`${styles.card} ml-4 mr-2`}>
-            {showModal && (
-                <Modal onClose={closeDetails}>
-                    <div className={`${styles.card_details}`}>
-                        <img
-                            src={item.image_large}
-                            alt="ingridient"
-                            className={styles.img}
-                        />
-                        <div
-                            className={`${styles.card_text} text text_type_main-medium`}
-                        >
-                            {item.name}
-                        </div>
-                        <div className={styles.card_text}>
-                            <div
-                                className={`${styles.card_calories} text text_type_main-default`}
-                            >
-                                <div className={styles.card_box}>
-                                    Калории,ккал
-                                    <div className="text_type_digits-default">
-                                        {item.calories}
-                                    </div>
-                                </div>
-                                <div className={styles.card_box}>
-                                    Белки, г
-                                    <div className="text_type_digits-default">
-                                        {item.proteins}
-                                    </div>
-                                </div>
-                                <div className={styles.card_box}>
-                                    Жиры, г
-                                    <div className="text_type_digits-default">
-                                        {item.fat}
-                                    </div>
-                                </div>
-                                <div className={styles.card_box}>
-                                    Углеводы, г
-                                    <div className="text_type_digits-default">
-                                        {item.carbohydrates}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </Modal>
-            )}
             <img
                 src={item.image}
-                alt="element"
+                alt={item.name}
                 className="ml-4 mr-4"
-                onClick={toggleDetails}
+                onClick={onClick}
             />
             <div className={styles.card_text}>
                 <Price value={item.price} />
@@ -80,6 +28,10 @@ function Card({ item }) {
 
 Card.propTypes = {
     item: ingridientType.isRequired,
+    onClick: PropTypes.func,
+};
+Card.defaultProps = {
+    onClick: () => {},
 };
 
 export default Card;

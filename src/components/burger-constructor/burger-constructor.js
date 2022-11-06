@@ -10,7 +10,8 @@ import Price from '../price/price';
 // import Card from '../card/card';
 import styles from './burger-constructor.module.css';
 import ingridientType from '../../utils/types';
-import Order from '../order/order';
+import Modal from '../modal/modal';
+import OrderDetails from '../order-details/order-details';
 // import data from '../../utils/data';
 
 const TOP_BUN_ID = '60d3b41abdacab0026a733c6';
@@ -21,19 +22,23 @@ function BurgerConstructor({ data }) {
     if (data.length) {
         top = data.find((i) => i._id === TOP_BUN_ID);
     }
-    const [showModal, SetShowModal] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const toggleModal = () => {
-        SetShowModal((prevState) => !prevState);
+        setShowModal((prevState) => !prevState);
         // console.log(showModal);
     };
     const closeModal = () => {
-        SetShowModal(false);
+        setShowModal(false);
     };
     return (
         <section
             className={`${styles.container} text text_type_main-default pt-25`}
         >
-            {showModal && <Order onClose={closeModal} />}
+            {showModal && (
+                <Modal text="" onClose={closeModal}>
+                    <OrderDetails />
+                </Modal>
+            )}
             <div className={styles.topcards}>
                 <ConstructorElement
                     type="top"

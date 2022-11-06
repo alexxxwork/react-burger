@@ -18,8 +18,14 @@ function App() {
 
     React.useEffect(() => {
         const getData = async () => {
-            fetch(API_URL)
-                .then((res) => res.json())
+            await fetch(API_URL)
+                .then(async (res) => {
+                    if (!res.ok) {
+                        const json = await res.json();
+                        throw new Error(json);
+                    }
+                    return res.json();
+                })
                 .then((data) =>
                     setState({ ...state, data: data.data, isLoading: false })
                 )
