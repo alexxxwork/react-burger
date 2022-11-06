@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import React from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
     ConstructorElement,
     DragIcon,
@@ -8,15 +9,31 @@ import {
 import Price from '../price/price';
 // import Card from '../card/card';
 import styles from './burger-constructor.module.css';
-import data from '../../utils/data';
+import ingridientType from '../../utils/types';
+import Order from '../order/order';
+// import data from '../../utils/data';
 
-function BurgerConstructor() {
-    const top = data.find((i) => i._id === '60666c42cc7b410027a1a9b1');
-    const bottom = top;
+const TOP_BUN_ID = '60d3b41abdacab0026a733c6';
+const BUN_NAME = 'bun';
+
+function BurgerConstructor({ data }) {
+    let top = {};
+    if (data.length) {
+        top = data.find((i) => i._id === TOP_BUN_ID);
+    }
+    const [showModal, SetShowModal] = useState(false);
+    const toggleModal = () => {
+        SetShowModal((prevState) => !prevState);
+        // console.log(showModal);
+    };
+    const closeModal = () => {
+        SetShowModal(false);
+    };
     return (
         <section
             className={`${styles.container} text text_type_main-default pt-25`}
         >
+            {showModal && <Order onClose={closeModal} />}
             <div className={styles.topcards}>
                 <ConstructorElement
                     type="top"
@@ -28,7 +45,7 @@ function BurgerConstructor() {
             </div>
             <div className={styles.cards}>
                 {data
-                    .filter((i) => i.type !== 'bun')
+                    .filter((i) => i.type !== BUN_NAME)
                     .map((i) => (
                         <div className={styles.element} key={i._id}>
                             <DragIcon type="primary" />
@@ -44,9 +61,9 @@ function BurgerConstructor() {
                 <ConstructorElement
                     type="bottom"
                     isLocked
-                    text={`${bottom.name} (низ)`}
-                    price={bottom.price}
-                    thumbnail={bottom.image}
+                    text={`${top.name} (низ)`}
+                    price={top.price}
+                    thumbnail={top.image}
                 />
             </div>
             <div className={styles.order}>
@@ -54,7 +71,12 @@ function BurgerConstructor() {
                     <Price value={610} big />
                 </div>
                 <div>
-                    <Button type="primary" size="large" htmlType="button">
+                    <Button
+                        type="primary"
+                        size="large"
+                        htmlType="button"
+                        onClick={toggleModal}
+                    >
                         Оформить заказ
                     </Button>
                 </div>
@@ -62,5 +84,8 @@ function BurgerConstructor() {
         </section>
     );
 }
+BurgerConstructor.propTypes = {
+    data: PropTypes.arrayOf(ingridientType).isRequired,
+};
 
 export default BurgerConstructor;

@@ -5,3 +5,7 @@
     gap: 40px;
     width: 100%;
 }
+.centered {
+    text-align: center;
+    margin: 40px;
+}

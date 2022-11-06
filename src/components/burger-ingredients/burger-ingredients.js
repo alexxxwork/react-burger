@@ -1,12 +1,24 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
+// import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-// import Price from '../price/price';
 import Card from '../card/card';
 import styles from './burger-ingredients.module.css';
-import data from '../../utils/data';
+import ingridientType from '../../utils/types';
+// import ModalOverlay from '../modal-overlay/modal-overlay';
+// import Modal from '../modal/modal';
 
-function BurgerIngredients() {
+const BUN_NAME = 'bun';
+const SAUCE_NAME = 'sauce';
+const MAIN_NAME = 'main';
+
+function BurgerIngredients({ data }) {
     const [current, setCurrent] = React.useState('buns');
+    // const modalRoot = document.getElementById('modal');
+
+    // const showDetails = () => <Modal />;
+
     return (
         <section className={styles.container}>
             <div className={`${styles.header} text text_type_main-default`}>
@@ -43,9 +55,8 @@ function BurgerIngredients() {
                 </div>
 
                 {data
-                    .filter((i) => i.type === 'bun')
+                    .filter((i) => i.type === BUN_NAME)
                     .map((i) => (
-                        // eslint-disable-next-line no-underscore-dangle
                         <Card item={i} key={i._id} />
                     ))}
                 <div
@@ -54,9 +65,8 @@ function BurgerIngredients() {
                     Соусы
                 </div>
                 {data
-                    .filter((i) => i.type === 'sauce')
+                    .filter((i) => i.type === SAUCE_NAME)
                     .map((i) => (
-                        // eslint-disable-next-line no-underscore-dangle
                         <Card item={i} key={i._id} />
                     ))}
                 <div
@@ -65,14 +75,16 @@ function BurgerIngredients() {
                     Начинки
                 </div>
                 {data
-                    .filter((i) => i.type === 'main')
+                    .filter((i) => i.type === MAIN_NAME)
                     .map((i) => (
-                        // eslint-disable-next-line no-underscore-dangle
                         <Card item={i} key={i._id} />
                     ))}
             </div>
         </section>
     );
 }
+BurgerIngredients.propTypes = {
+    data: PropTypes.arrayOf(ingridientType).isRequired,
+};
 
 export default BurgerIngredients;
