@@ -1,20 +1,13 @@
-.card_text {
-    display: inline-flex;
+.order_text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
     text-align: center;
     justify-content: center;
     align-content: center;
     width: 100%;
-    margin: 16px 0px 32px;
-}
-.card_calories {
-    display: inline-flex;
-    text-align: center;
-    justify-content: center;
-    align-content: center;
-    width: 100%;
-    color: #8585ad;
-    gap: 20px;
-    margin-bottom: 60px;
+    margin: 0px 0px 120px;
 }
 .card_box {
     max-width: 120px;
@@ -36,4 +29,12 @@
     max-width: fit-content;
     object-fit: contain;
     align-self: center;
+}
+.icon {
+    max-width: max-content;
+    width: 120px;
+    height: 120px;
+    object-fit: fill;
+    align-self: center;
+    margin-bottom: 16px;
 }

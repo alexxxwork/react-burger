@@ -3,7 +3,7 @@
     flex-wrap: wrap;
     max-width: 600px;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 0px;
 }
 .header {
     display: inline-flex;
@@ -34,7 +34,7 @@
     flex-wrap: wrap;
     width: 100%;
     overflow-y: auto;
-    height: 716px;
+    height: calc(100vh - 268px);
 }
 .cards::-webkit-scrollbar {
     width: 8px;
