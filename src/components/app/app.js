@@ -1,9 +1,10 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-// import Modal from '../modal/modal';
-// import ModalOverlay from '../modal-overlay/modal-overlay';
+import { DataContext } from '../../utils/dataContext';
+
 import '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app.module.css';
 
@@ -14,6 +15,14 @@ function App() {
         isLoading: false,
         hasError: false,
         data: [],
+        bun: null,
+        ingredients: [],
+        order: {
+            data: [],
+            isLoading: false,
+            hasError: false,
+        },
+        error: null,
     });
 
     React.useEffect(() => {
@@ -29,11 +38,16 @@ function App() {
                 .then((data) =>
                     setState({ ...state, data: data.data, isLoading: false })
                 )
-                .catch(() => {
-                    setState({ ...state, hasError: true, isLoading: false });
+                .catch((err) => {
+                    setState({
+                        ...state,
+                        hasError: true,
+                        isLoading: false,
+                        error: err,
+                    });
                 });
         };
-        setState({ ...state, hasError: false, isLoading: true });
+        setState({ ...state, hasError: false, isLoading: true, error: null });
         getData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -52,8 +66,10 @@ function App() {
             )}
             {!state.isLoading && !state.hasError && state.data.length && (
                 <main className={styles.main}>
-                    <BurgerIngredients data={state.data} />
-                    <BurgerConstructor data={state.data} />
+                    <DataContext.Provider value={{ state, setState }}>
+                        <BurgerIngredients />
+                        <BurgerConstructor />
+                    </DataContext.Provider>
                 </main>
             )}
         </>

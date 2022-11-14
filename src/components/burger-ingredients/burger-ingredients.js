@@ -1,25 +1,36 @@
 /* eslint-disable no-underscore-dangle */
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
 // import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import { v4 as uuid } from 'uuid';
 import Card from '../card/card';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import { DataContext } from '../../utils/dataContext';
 import styles from './burger-ingredients.module.css';
-import ingridientType from '../../utils/types';
+// import ingridientType from '../../utils/types';
 
 const BUN_NAME = 'bun';
 const SAUCE_NAME = 'sauce';
 const MAIN_NAME = 'main';
 
-function BurgerIngredients({ data }) {
+function BurgerIngredients() {
     const [current, setCurrent] = useState('buns');
     const [showModal, setShowModal] = useState(false);
     const currentItem = useRef(null);
+    const { state, setState } = useContext(DataContext);
+    const { data } = state;
+    // let { bun, ingredients } = useContext(DataContext);
 
     const toggleDetails = (item) => {
         currentItem.current = item;
+        if (item.type === BUN_NAME) setState({ ...state, bun: item });
+        else
+            setState({
+                ...state,
+                ingredients: [...state.ingredients, { ...item, id: uuid() }],
+            });
         setShowModal((prevState) => !prevState);
     };
     const closeDetails = () => {
@@ -107,8 +118,8 @@ function BurgerIngredients({ data }) {
         </section>
     );
 }
-BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(ingridientType).isRequired,
-};
+// BurgerIngredients.propTypes = {
+//    data: PropTypes.arrayOf(ingridientType).isRequired,
+// };
 
 export default BurgerIngredients;

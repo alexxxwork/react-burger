@@ -22,7 +22,6 @@
     "plugins": ["react", "@typescript-eslint"],
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-        "indent": ["error", 4, { "ignoreComments": true }],
         "react/jsx-uses-react": "error",
         "react/jsx-uses-vars": "error"
     }
