@@ -6,6 +6,7 @@ import {
     getItemsSuccess,
     getItemsFailed,
     addItem,
+    moveItem,
     setCurrentItem,
 } from '../actions';
 import { BUN_NAME } from '../../utils/constants';
@@ -37,6 +38,13 @@ export const itemsReducer = createReducer(initialState, (builder) => {
         })
         .addCase(setCurrentItem, (state, action) => {
             state.currentItem = action.payload;
+        })
+        .addCase(moveItem, (state, action) => {
+            state.ingredients.splice(
+                action.payload.toIndex,
+                0,
+                state.ingredients.splice(action.payload.fromIndex, 1)[0]
+            );
         })
         .addCase(addItem, (state, action) => {
             if (action.payload.type === BUN_NAME) state.bun = action.payload;

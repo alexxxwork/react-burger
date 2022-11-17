@@ -6,7 +6,7 @@ import Card from '../card/card';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { getItems } from '../../services/reducers';
-import { addItem, setCurrentItem } from '../../services/actions';
+import { setCurrentItem } from '../../services/actions';
 import styles from './burger-ingredients.module.css';
 import { BUN_NAME, SAUCE_NAME, MAIN_NAME } from '../../utils/constants';
 
@@ -25,7 +25,7 @@ function BurgerIngredients() {
 
     const toggleDetails = (item) => {
         dispatch(setCurrentItem(item));
-        dispatch(addItem(item));
+        // dispatch(addItem(item));
         setShowModal((prevState) => !prevState);
     };
     const closeDetails = () => {

@@ -1,22 +1,19 @@
 /* eslint-disable no-underscore-dangle */
-import { useState, useReducer, useEffect } from 'react';
+import { useState, useReducer, useEffect, useCallback } from 'react';
 import {
     ConstructorElement,
-    DragIcon,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-// import { v4 as uuid } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import Price from '../price/price';
 import styles from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-// import { DataContext } from '../../utils/dataContext';
+import OrderCard from '../order-card/order-card';
 import { getOrder } from '../../services/reducers';
 import { BUN_NAME, BLANK_GIF } from '../../utils/constants';
-import { addItem } from '../../services/actions';
-// import ingridientType from '../../utils/types';
+import { addItem, moveItem } from '../../services/actions';
 
 const initialSum = { value: 0 };
 
@@ -99,6 +96,13 @@ function BurgerConstructor() {
             toggleModal();
         }
     };
+    const moveCard = useCallback(
+        (fromIndex, toIndex) => {
+            dispatch(moveItem({ fromIndex, toIndex }));
+        },
+        [dispatch]
+    );
+
     return (
         <section
             className={`${styles.container} text text_type_main-default pt-25`}
@@ -121,15 +125,13 @@ function BurgerConstructor() {
                 {ingredients.length ? (
                     ingredients
                         .filter((i) => i.type !== BUN_NAME)
-                        .map((i) => (
-                            <div className={styles.element} key={i.id}>
-                                <DragIcon type="primary" />
-                                <ConstructorElement
-                                    text={i.name}
-                                    price={i.price}
-                                    thumbnail={i.image}
-                                />
-                            </div>
+                        .map((item, index) => (
+                            <OrderCard
+                                item={item}
+                                index={index}
+                                moveCard={moveCard}
+                                key={item.id}
+                            />
                         ))
                 ) : (
                     <div className={styles.element}>

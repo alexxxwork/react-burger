@@ -13,7 +13,6 @@ import styles from './card.module.css';
 function Card({ item, onClick, count, draggable }) {
     const [{ opacity }, ref] = useDrag({
         type: item.type,
-        // eslint-disable-next-line no-underscore-dangle
         item: { ...item },
         collect: (monitor) => ({
             opacity: monitor.isDragging() ? 0.9 : 1,
