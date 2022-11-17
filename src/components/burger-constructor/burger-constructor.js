@@ -13,7 +13,7 @@ import OrderDetails from '../order-details/order-details';
 import OrderCard from '../order-card/order-card';
 import { getOrder } from '../../services/reducers';
 import { BUN_NAME, BLANK_GIF } from '../../utils/constants';
-import { addItem, moveItem } from '../../services/actions';
+import { addItem, moveItem, deleteItem } from '../../services/actions';
 
 const initialSum = { value: 0 };
 
@@ -130,6 +130,7 @@ function BurgerConstructor() {
                                 item={item}
                                 index={index}
                                 moveCard={moveCard}
+                                deleteCard={() => dispatch(deleteItem(index))}
                                 key={item.id}
                             />
                         ))

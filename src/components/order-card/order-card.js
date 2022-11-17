@@ -10,7 +10,7 @@ import ingridientType from '../../utils/types';
 import styles from './order-card.module.css';
 // import IngredientDetails from '../ingredient-details/ingredient-details';
 
-function OrderCard({ item, index, moveCard }) {
+function OrderCard({ item, index, moveCard, deleteCard }) {
     const ref = useRef(null);
     const [{ handlerId }, drop] = useDrop({
         accept: 'ingredient',
@@ -73,6 +73,7 @@ function OrderCard({ item, index, moveCard }) {
                 text={item.name}
                 price={item.price}
                 thumbnail={item.image}
+                handleClose={deleteCard}
             />
         </div>
     );
@@ -82,6 +83,7 @@ OrderCard.propTypes = {
     item: ingridientType.isRequired,
     index: PropTypes.number.isRequired,
     moveCard: PropTypes.func.isRequired,
+    deleteCard: PropTypes.func.isRequired,
 };
 OrderCard.defaultProps = {};
 
