@@ -13,9 +13,8 @@ import { BUN_NAME, SAUCE_NAME, MAIN_NAME } from '../../utils/constants';
 function BurgerIngredients() {
     const [current, setCurrent] = useState('buns');
     const [showModal, setShowModal] = useState(false);
-    const { data, currentItem, ingredients, bun } = useSelector(
-        (store) => store.items
-    );
+    const { data, currentItem, ingredients, bun, isLoading, hasError } =
+        useSelector((store) => store.items);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const refs = { buns: useRef(), main: useRef(), sauce: useRef() };
     const scroll = useRef();
@@ -25,7 +24,6 @@ function BurgerIngredients() {
 
     const toggleDetails = (item) => {
         dispatch(setCurrentItem(item));
-        // dispatch(addItem(item));
         setShowModal((prevState) => !prevState);
     };
     const closeDetails = () => {
@@ -50,8 +48,10 @@ function BurgerIngredients() {
             });
             if (tab !== current) setCurrent(tab);
         };
-        scrollRef.addEventListener('scroll', onScroll);
-        return () => scrollRef.removeEventListener('scroll', onScroll);
+        if (scrollRef) scrollRef.addEventListener('scroll', onScroll);
+        return () => {
+            if (scrollRef) scrollRef.removeEventListener('scroll', onScroll);
+        };
     }, [current, refs]);
 
     const setTab = (tab) => {
@@ -76,97 +76,123 @@ function BurgerIngredients() {
     };
 
     return (
-        <section className={styles.container}>
-            {showModal && currentItem && (
-                <Modal text="Детали ингридиента" onClose={closeDetails}>
-                    <IngredientDetails item={currentItem} />
-                </Modal>
+        <>
+            {isLoading && (
+                <p className={`text text_type_main-medium ${styles.centered}`}>
+                    Загрузка...
+                </p>
             )}
-            <div className={`${styles.header} text text_type_main-default`}>
-                Соберите бургер
-            </div>
-            <div className={`${styles.tab}`}>
-                <Tab value="buns" active={current === 'buns'} onClick={setTab}>
-                    Булки
-                </Tab>
-                <Tab
-                    value="sauce"
-                    active={current === 'sauce'}
-                    onClick={setTab}
-                >
-                    Соусы
-                </Tab>
-                <Tab value="main" active={current === 'main'} onClick={setTab}>
-                    Начинки
-                </Tab>
-            </div>
-            <div
-                className={`${styles.cards} text text_type_main-default`}
-                ref={scroll}
-            >
-                <div ref={refs.buns} className={styles.section_cards}>
+            {hasError && (
+                <p className={`text text_type_main-medium ${styles.centered}`}>
+                    Не удалось загрузить данные
+                </p>
+            )}
+            {!isLoading && !hasError && data.length && (
+                <section className={styles.container}>
+                    {showModal && currentItem && (
+                        <Modal text="Детали ингридиента" onClose={closeDetails}>
+                            <IngredientDetails item={currentItem} />
+                        </Modal>
+                    )}
                     <div
-                        className={`${styles.section} text text_type_main-default mb-6 mt-10`}
+                        className={`${styles.header} text text_type_main-default`}
                     >
-                        Булки
+                        Соберите бургер
                     </div>
+                    <div className={`${styles.tab}`}>
+                        <Tab
+                            value="buns"
+                            active={current === 'buns'}
+                            onClick={setTab}
+                        >
+                            Булки
+                        </Tab>
+                        <Tab
+                            value="sauce"
+                            active={current === 'sauce'}
+                            onClick={setTab}
+                        >
+                            Соусы
+                        </Tab>
+                        <Tab
+                            value="main"
+                            active={current === 'main'}
+                            onClick={setTab}
+                        >
+                            Начинки
+                        </Tab>
+                    </div>
+                    <div
+                        className={`${styles.cards} text text_type_main-default`}
+                        ref={scroll}
+                    >
+                        <div ref={refs.buns} className={styles.section_cards}>
+                            <div
+                                className={`${styles.section} text text_type_main-default mb-6 mt-10`}
+                            >
+                                Булки
+                            </div>
 
-                    {data
-                        .filter((i) => i.type === BUN_NAME)
-                        .map((i) => (
-                            <Card
-                                item={i}
-                                key={i._id}
-                                onClick={() => toggleDetails(i)}
-                                draggable
-                                count={bun && bun._id === i._id ? 1 : 0}
-                            />
-                        ))}
-                </div>
-                <div ref={refs.sauce} className={styles.section_cards}>
-                    <div
-                        className={`${styles.section} text text_type_main-default mb-6 mt-10`}
-                    >
-                        Соусы
+                            {data
+                                .filter((i) => i.type === BUN_NAME)
+                                .map((i) => (
+                                    <Card
+                                        item={i}
+                                        key={i._id}
+                                        onClick={() => toggleDetails(i)}
+                                        draggable
+                                        count={bun && bun._id === i._id ? 2 : 0}
+                                    />
+                                ))}
+                        </div>
+                        <div ref={refs.sauce} className={styles.section_cards}>
+                            <div
+                                className={`${styles.section} text text_type_main-default mb-6 mt-10`}
+                            >
+                                Соусы
+                            </div>
+                            {data
+                                .filter((i) => i.type === SAUCE_NAME)
+                                .map((i) => (
+                                    <Card
+                                        item={i}
+                                        key={i._id}
+                                        onClick={() => toggleDetails(i)}
+                                        draggable
+                                        count={
+                                            ingredients.filter(
+                                                (c) => c._id === i._id
+                                            ).length
+                                        }
+                                    />
+                                ))}
+                        </div>
+                        <div ref={refs.main} className={styles.section_cards}>
+                            <div
+                                className={`${styles.section} text text_type_main-default mb-6 mt-10`}
+                            >
+                                Начинки
+                            </div>
+                            {data
+                                .filter((i) => i.type === MAIN_NAME)
+                                .map((i) => (
+                                    <Card
+                                        item={i}
+                                        key={i._id}
+                                        onClick={() => toggleDetails(i)}
+                                        draggable
+                                        count={
+                                            ingredients.filter(
+                                                (c) => c._id === i._id
+                                            ).length
+                                        }
+                                    />
+                                ))}
+                        </div>
                     </div>
-                    {data
-                        .filter((i) => i.type === SAUCE_NAME)
-                        .map((i) => (
-                            <Card
-                                item={i}
-                                key={i._id}
-                                onClick={() => toggleDetails(i)}
-                                draggable
-                                count={
-                                    ingredients.filter((c) => c._id === i._id)
-                                        .length
-                                }
-                            />
-                        ))}
-                </div>
-                <div ref={refs.main} className={styles.section_cards}>
-                    <div
-                        className={`${styles.section} text text_type_main-default mb-6 mt-10`}
-                    >
-                        Начинки
-                    </div>
-                    {data
-                        .filter((i) => i.type === MAIN_NAME)
-                        .map((i) => (
-                            <Card
-                                item={i}
-                                key={i._id}
-                                onClick={() => toggleDetails(i)}
-                                draggable
-                                count={
-                                    ingredients.filter((c) => c._id === i._id)
-                                        .length
-                                }
-                            />
-                        ))}
-                </div>
-            </div>
-        </section>
+                </section>
+            )}
+        </>
     );
 }
 

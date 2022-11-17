@@ -55,8 +55,8 @@ export function getOrder(bun, ingredients) {
                     ? {
                           ingredients: [
                               bun._id,
-                              bun._id,
                               ...ingredients.map((i) => i._id),
+                              bun._id,
                           ],
                       }
                     : {

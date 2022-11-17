@@ -6,7 +6,7 @@ import { getOrderRequest, getOrderSuccess, getOrderFailed } from '../actions';
 export const initialState = {
     isLoading: false,
     hasError: false,
-    data: {},
+    data: null,
     error: null,
 };
 
@@ -24,6 +24,6 @@ export const orderReducer = createReducer(initialState, (builder) => {
         .addCase(getOrderFailed, (state) => {
             state.isLoading = false;
             state.hasError = true;
-            state.data = {};
+            state.data = null;
         });
 });

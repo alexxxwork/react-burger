@@ -68,8 +68,8 @@ function BurgerConstructor() {
         dispatchSum();
     }, [bun, ingredients]);
 
-    let top = {};
-    let bottom = {};
+    let top = null;
+    let bottom = null;
 
     if (bun) {
         top = bun;
