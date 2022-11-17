@@ -1,14 +1,23 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import '@ya.praktikum/react-developer-burger-ui-components';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
+
+import { rootReducer } from '../../services/reducers';
+import { API_URL } from '../../utils/constants';
+
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import { DataContext } from '../../utils/dataContext';
 
-import '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app.module.css';
 
-const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
+const store = configureStore({
+    reducer: rootReducer,
+    devTools: true,
+});
 
 function App() {
     const [state, setState] = React.useState({
@@ -52,7 +61,7 @@ function App() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
-        <>
+        <Provider store={store}>
             <AppHeader />
             {state.isLoading && (
                 <p className={`text text_type_main-medium ${styles.centered}`}>
@@ -66,13 +75,13 @@ function App() {
             )}
             {!state.isLoading && !state.hasError && state.data.length && (
                 <main className={styles.main}>
-                    <DataContext.Provider value={{ state, setState }}>
+                    <DndProvider backend={HTML5Backend}>
                         <BurgerIngredients />
                         <BurgerConstructor />
-                    </DataContext.Provider>
+                    </DndProvider>
                 </main>
             )}
-        </>
+        </Provider>
     );
 }
 

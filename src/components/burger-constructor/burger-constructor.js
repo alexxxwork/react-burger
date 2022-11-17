@@ -1,29 +1,60 @@
 /* eslint-disable no-underscore-dangle */
-import { useState, useContext, useReducer, useEffect } from 'react';
+import { useState, useReducer, useEffect } from 'react';
 import {
     ConstructorElement,
     DragIcon,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { v4 as uuid } from 'uuid';
+// import { v4 as uuid } from 'uuid';
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from 'react-dnd';
 import Price from '../price/price';
 import styles from './burger-constructor.module.css';
-// import PropTypes from 'prop-types';
-// import ingridientType from '../../utils/types';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { DataContext } from '../../utils/dataContext';
+// import { DataContext } from '../../utils/dataContext';
+import { getOrder } from '../../services/reducers';
+import { BUN_NAME, BLANK_GIF } from '../../utils/constants';
+import { addItem } from '../../services/actions';
+// import ingridientType from '../../utils/types';
 
-// const TOP_BUN_ID = '60d3b41abdacab0026a733c6';
-const BUN_NAME = 'bun';
-const BLANK_GIF = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 const initialSum = { value: 0 };
-const ORDER_URL = 'https://norma.nomoreparties.space/api/orders';
 
 function BurgerConstructor() {
     const [showModal, setShowModal] = useState(false);
-    const { state, setState } = useContext(DataContext);
-    const { bun, ingredients } = state;
+    const { bun, ingredients } = useSelector((store) => store.items);
+    const dispatch = useDispatch();
+
+    // eslint-disable-next-line no-unused-vars
+    const [{ isHover }, dropTarget] = useDrop({
+        accept: ['main', 'sauce'],
+        drop(item) {
+            dispatch(addItem(item));
+        },
+        collect: (monitor) => ({
+            isHover: monitor.isOver(),
+        }),
+    });
+    // eslint-disable-next-line no-unused-vars
+    const [{ isHoverUpBun }, dropUpBun] = useDrop({
+        accept: 'bun',
+        drop(item) {
+            dispatch(addItem(item));
+        },
+        collect: (monitor) => ({
+            isHover: monitor.isOver(),
+        }),
+    });
+    // eslint-disable-next-line no-unused-vars
+    const [{ isHoverBottomUpBun }, dropBottomBun] = useDrop({
+        accept: 'bun',
+        drop(item) {
+            dispatch(addItem(item));
+        },
+        collect: (monitor) => ({
+            isHover: monitor.isOver(),
+        }),
+    });
 
     function reducer() {
         return (ingredients && ingredients.length) || bun
@@ -43,9 +74,6 @@ function BurgerConstructor() {
     let top = {};
     let bottom = {};
 
-    // if (data.length) {
-    // bun = data.find((i) => i._id === TOP_BUN_ID);
-    // }
     if (bun) {
         top = bun;
         bottom = { ...top, name: `${top.name} (низ)` };
@@ -66,58 +94,10 @@ function BurgerConstructor() {
         setShowModal(false);
     };
     const sendOrder = () => {
-        toggleModal();
-        const getData = async () => {
-            await fetch(ORDER_URL, {
-                method: 'post',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    ingredients: [
-                        bun._id,
-                        bun._id,
-                        ...ingredients.map((i) => i._id),
-                    ],
-                }),
-            })
-                .then(async (res) => {
-                    if (!res.ok) {
-                        const json = await res.json();
-                        throw new Error(json);
-                    }
-                    return res.json();
-                })
-                .then((data) => {
-                    setState({
-                        ...state,
-                        order: {
-                            ...state.order,
-                            data,
-                            hasError: false,
-                            isLoading: false,
-                        },
-                    });
-                })
-                .catch((err) => {
-                    setState({
-                        ...state,
-                        order: {
-                            ...state.order,
-                            hasError: true,
-                            isLoading: false,
-                        },
-                        error: err,
-                    });
-                });
-        };
-        setState({
-            ...state,
-            order: { ...state.order, hasError: false, isLoading: true },
-            error: null,
-        });
-        getData();
+        if (bun || ingredients.length) {
+            dispatch(getOrder(bun, ingredients));
+            toggleModal();
+        }
     };
     return (
         <section
@@ -128,7 +108,7 @@ function BurgerConstructor() {
                     <OrderDetails />
                 </Modal>
             )}
-            <div className={styles.topcards} key={uuid()}>
+            <div className={styles.topcards} ref={dropUpBun}>
                 <ConstructorElement
                     type="top"
                     isLocked
@@ -137,7 +117,7 @@ function BurgerConstructor() {
                     thumbnail={top.image}
                 />
             </div>
-            <div className={styles.cards}>
+            <div className={styles.cards} ref={dropTarget}>
                 {ingredients.length ? (
                     ingredients
                         .filter((i) => i.type !== BUN_NAME)
@@ -152,7 +132,7 @@ function BurgerConstructor() {
                             </div>
                         ))
                 ) : (
-                    <div className={styles.element} key={uuid()}>
+                    <div className={styles.element}>
                         <div className={styles.placeholder_left} />
                         <div className={styles.placeholder}>
                             Добавьте ингредиенты
@@ -160,7 +140,7 @@ function BurgerConstructor() {
                     </div>
                 )}
             </div>
-            <div className={`${styles.topcards} mt-4`} key={uuid()}>
+            <div className={`${styles.topcards} mt-4`} ref={dropBottomBun}>
                 <ConstructorElement
                     type="bottom"
                     isLocked
@@ -187,8 +167,5 @@ function BurgerConstructor() {
         </section>
     );
 }
-// BurgerConstructor.propTypes = {
-//    data: PropTypes.arrayOf(ingridientType).isRequired,
-// };
 
 export default BurgerConstructor;

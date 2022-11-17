@@ -1,125 +1,173 @@
 /* eslint-disable no-underscore-dangle */
-import { useState, useRef, useContext } from 'react';
-// import ReactDOM from 'react-dom';
-// import PropTypes from 'prop-types';
+import { useState, useEffect, useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { v4 as uuid } from 'uuid';
+import { useDispatch, useSelector } from 'react-redux';
 import Card from '../card/card';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { DataContext } from '../../utils/dataContext';
+import { getItems } from '../../services/reducers';
+import { addItem, setCurrentItem } from '../../services/actions';
 import styles from './burger-ingredients.module.css';
-// import ingridientType from '../../utils/types';
-
-const BUN_NAME = 'bun';
-const SAUCE_NAME = 'sauce';
-const MAIN_NAME = 'main';
+import { BUN_NAME, SAUCE_NAME, MAIN_NAME } from '../../utils/constants';
 
 function BurgerIngredients() {
     const [current, setCurrent] = useState('buns');
     const [showModal, setShowModal] = useState(false);
-    const currentItem = useRef(null);
-    const { state, setState } = useContext(DataContext);
-    const { data } = state;
-    // let { bun, ingredients } = useContext(DataContext);
+    const { data, currentItem, ingredients, bun } = useSelector(
+        (store) => store.items
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const refs = { buns: useRef(), main: useRef(), sauce: useRef() };
+    const scroll = useRef();
+
+    const dispatch = useDispatch();
+    useEffect(() => dispatch(getItems()), [dispatch]);
 
     const toggleDetails = (item) => {
-        currentItem.current = item;
-        if (item.type === BUN_NAME) setState({ ...state, bun: item });
-        else
-            setState({
-                ...state,
-                ingredients: [...state.ingredients, { ...item, id: uuid() }],
-            });
+        dispatch(setCurrentItem(item));
+        dispatch(addItem(item));
         setShowModal((prevState) => !prevState);
     };
     const closeDetails = () => {
         setShowModal(false);
+        dispatch(setCurrentItem(null));
+    };
+
+    useEffect(() => {
+        const scrollRef = scroll.current;
+
+        const onScroll = () => {
+            let delta = scroll.current.getBoundingClientRect().top;
+            let tab = current;
+            Object.keys(refs).forEach((ref) => {
+                const curDelta = Math.abs(
+                    delta - refs[ref].current.getBoundingClientRect().top
+                );
+                if (curDelta < delta) {
+                    delta = curDelta;
+                    tab = ref;
+                }
+            });
+            if (tab !== current) setCurrent(tab);
+        };
+        scrollRef.addEventListener('scroll', onScroll);
+        return () => scrollRef.removeEventListener('scroll', onScroll);
+    }, [current, refs]);
+
+    const setTab = (tab) => {
+        scroll.current.scrollTo({
+            left: 0,
+            top: ((t) => {
+                switch (t) {
+                    case 'sauce':
+                        return refs.buns.current.getBoundingClientRect().height;
+                    case 'main':
+                        return (
+                            refs.buns.current.getBoundingClientRect().height +
+                            refs.sauce.current.getBoundingClientRect().height
+                        );
+                    default:
+                        return 0;
+                }
+            })(tab),
+            behavior: 'smooth',
+        });
+        setCurrent(tab);
     };
 
     return (
         <section className={styles.container}>
-            {showModal && currentItem.current && (
+            {showModal && currentItem && (
                 <Modal text="Детали ингридиента" onClose={closeDetails}>
-                    <IngredientDetails item={currentItem.current} />
+                    <IngredientDetails item={currentItem} />
                 </Modal>
             )}
             <div className={`${styles.header} text text_type_main-default`}>
                 Соберите бургер
             </div>
             <div className={`${styles.tab}`}>
-                <Tab
-                    value="buns"
-                    active={current === 'buns'}
-                    onClick={setCurrent}
-                >
+                <Tab value="buns" active={current === 'buns'} onClick={setTab}>
                     Булки
                 </Tab>
                 <Tab
                     value="sauce"
                     active={current === 'sauce'}
-                    onClick={setCurrent}
+                    onClick={setTab}
                 >
                     Соусы
                 </Tab>
-                <Tab
-                    value="main"
-                    active={current === 'main'}
-                    onClick={setCurrent}
-                >
+                <Tab value="main" active={current === 'main'} onClick={setTab}>
                     Начинки
                 </Tab>
             </div>
-            <div className={`${styles.cards} text text_type_main-default`}>
-                <div
-                    className={`${styles.section} text text_type_main-default mb-6 mt-10`}
-                >
-                    Булки
-                </div>
+            <div
+                className={`${styles.cards} text text_type_main-default`}
+                ref={scroll}
+            >
+                <div ref={refs.buns} className={styles.section_cards}>
+                    <div
+                        className={`${styles.section} text text_type_main-default mb-6 mt-10`}
+                    >
+                        Булки
+                    </div>
 
-                {data
-                    .filter((i) => i.type === BUN_NAME)
-                    .map((i) => (
-                        <Card
-                            item={i}
-                            key={i._id}
-                            onClick={() => toggleDetails(i)}
-                        />
-                    ))}
-                <div
-                    className={`${styles.section} text text_type_main-default mb-6 mt-10`}
-                >
-                    Соусы
+                    {data
+                        .filter((i) => i.type === BUN_NAME)
+                        .map((i) => (
+                            <Card
+                                item={i}
+                                key={i._id}
+                                onClick={() => toggleDetails(i)}
+                                draggable
+                                count={bun && bun._id === i._id ? 1 : 0}
+                            />
+                        ))}
                 </div>
-                {data
-                    .filter((i) => i.type === SAUCE_NAME)
-                    .map((i) => (
-                        <Card
-                            item={i}
-                            key={i._id}
-                            onClick={() => toggleDetails(i)}
-                        />
-                    ))}
-                <div
-                    className={`${styles.section} text text_type_main-default mb-6 mt-10`}
-                >
-                    Начинки
+                <div ref={refs.sauce} className={styles.section_cards}>
+                    <div
+                        className={`${styles.section} text text_type_main-default mb-6 mt-10`}
+                    >
+                        Соусы
+                    </div>
+                    {data
+                        .filter((i) => i.type === SAUCE_NAME)
+                        .map((i) => (
+                            <Card
+                                item={i}
+                                key={i._id}
+                                onClick={() => toggleDetails(i)}
+                                draggable
+                                count={
+                                    ingredients.filter((c) => c._id === i._id)
+                                        .length
+                                }
+                            />
+                        ))}
                 </div>
-                {data
-                    .filter((i) => i.type === MAIN_NAME)
-                    .map((i) => (
-                        <Card
-                            item={i}
-                            key={i._id}
-                            onClick={() => toggleDetails(i)}
-                        />
-                    ))}
+                <div ref={refs.main} className={styles.section_cards}>
+                    <div
+                        className={`${styles.section} text text_type_main-default mb-6 mt-10`}
+                    >
+                        Начинки
+                    </div>
+                    {data
+                        .filter((i) => i.type === MAIN_NAME)
+                        .map((i) => (
+                            <Card
+                                item={i}
+                                key={i._id}
+                                onClick={() => toggleDetails(i)}
+                                draggable
+                                count={
+                                    ingredients.filter((c) => c._id === i._id)
+                                        .length
+                                }
+                            />
+                        ))}
+                </div>
             </div>
         </section>
     );
 }
-// BurgerIngredients.propTypes = {
-//    data: PropTypes.arrayOf(ingridientType).isRequired,
-// };
 
 export default BurgerIngredients;
