@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import { v4 as uuid } from 'uuid';
 import { addItem, moveItem, deleteItem, setCurrentItem } from '../actions';
 import { BUN_NAME } from '../../utils/constants';
 
@@ -29,6 +28,6 @@ export const itemsReducer = createReducer(initialState, (builder) => {
         })
         .addCase(addItem, (state, action) => {
             if (action.payload.type === BUN_NAME) state.bun = action.payload;
-            else state.ingredients.push({ ...action.payload, id: uuid() });
+            else state.ingredients.push(action.payload);
         });
 });
