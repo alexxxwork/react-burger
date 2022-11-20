@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Card from '../card/card';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { getItems } from '../../services/reducers';
+import { getItems } from '../../services/reducers/get-items';
 import { setCurrentItem } from '../../services/actions';
 import styles from './burger-ingredients.module.css';
 import { BUN_NAME, SAUCE_NAME, MAIN_NAME } from '../../utils/constants';
@@ -13,9 +13,8 @@ import { BUN_NAME, SAUCE_NAME, MAIN_NAME } from '../../utils/constants';
 function BurgerIngredients() {
     const [current, setCurrent] = useState('buns');
     const [showModal, setShowModal] = useState(false);
-    const { data, currentItem, ingredients, bun, isLoading, hasError } =
-        useSelector((store) => store.items);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const { currentItem, ingredients, bun } = useSelector((s) => s.items);
+    const { data, isLoading, hasError } = useSelector((s) => s.fetch);
     const refs = { buns: useRef(), main: useRef(), sauce: useRef() };
     const scroll = useRef();
 
@@ -31,28 +30,20 @@ function BurgerIngredients() {
         dispatch(setCurrentItem(null));
     };
 
-    useEffect(() => {
-        const scrollRef = scroll.current;
-
-        const onScroll = () => {
-            let delta = scroll.current.getBoundingClientRect().top;
-            let tab = current;
-            Object.keys(refs).forEach((ref) => {
-                const curDelta = Math.abs(
-                    delta - refs[ref].current.getBoundingClientRect().top
-                );
-                if (curDelta < delta) {
-                    delta = curDelta;
-                    tab = ref;
-                }
-            });
-            if (tab !== current) setCurrent(tab);
-        };
-        if (scrollRef) scrollRef.addEventListener('scroll', onScroll);
-        return () => {
-            if (scrollRef) scrollRef.removeEventListener('scroll', onScroll);
-        };
-    }, [current, refs]);
+    const onScroll = () => {
+        let delta = scroll.current.getBoundingClientRect().top;
+        let tab = current;
+        Object.keys(refs).forEach((ref) => {
+            const curDelta = Math.abs(
+                delta - refs[ref].current.getBoundingClientRect().top
+            );
+            if (curDelta < delta) {
+                delta = curDelta;
+                tab = ref;
+            }
+        });
+        if (tab !== current) setCurrent(tab);
+    };
 
     const setTab = (tab) => {
         scroll.current.scrollTo({
@@ -125,6 +116,7 @@ function BurgerIngredients() {
                     <div
                         className={`${styles.cards} text text_type_main-default`}
                         ref={scroll}
+                        onScroll={onScroll}
                     >
                         <div ref={refs.buns} className={styles.section_cards}>
                             <div

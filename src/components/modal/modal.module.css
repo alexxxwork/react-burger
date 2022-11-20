@@ -24,3 +24,6 @@
 .content {
     padding: 40px;
 }
+.close_icon {
+    cursor: pointer;
+}

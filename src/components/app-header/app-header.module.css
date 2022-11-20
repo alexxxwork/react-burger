@@ -37,6 +37,9 @@
     align-items: center;
     flex-basis: 320px;
 }
+.element:hover,
+.element:active,
+.element:visited,
 .element {
     align-content: center;
     text-align: center;
@@ -49,6 +52,22 @@
     justify-content: center;
     align-items: center;
     padding: 4px;
+    text-decoration: none;
+    color: white;
+}
+.element_inactive {
+    align-content: center;
+    text-align: center;
+    vertical-align: middle;
+    font-family: 'JetBrains Mono', Helvetica, sans-serif;
+    line-height: 24px;
+    size: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+    text-decoration: none;
 }
 .logo {
     display: inline-flex;

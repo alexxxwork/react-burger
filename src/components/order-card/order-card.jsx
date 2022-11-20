@@ -56,7 +56,7 @@ function OrderCard({ item, index, moveCard, deleteCard }) {
         type: 'ingredient',
         item: { ...item, index },
         collect: (monitor) => ({
-            opacity: monitor.isDragging ? 0.5 : 1,
+            opacity: monitor.isDragging ? 0.8 : 1,
         }),
     });
     drag(drop(ref));

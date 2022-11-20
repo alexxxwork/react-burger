@@ -5,7 +5,7 @@ import '@ya.praktikum/react-developer-burger-ui-components';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
-import { rootReducer } from '../../services/reducers';
+import rootReducer from '../../services/reducers';
 
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
@@ -22,7 +22,6 @@ function App() {
     return (
         <Provider store={store}>
             <AppHeader />
-
             <main className={styles.main}>
                 <DndProvider backend={HTML5Backend}>
                     <BurgerIngredients />

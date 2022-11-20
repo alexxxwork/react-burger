@@ -11,7 +11,7 @@ import styles from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import OrderCard from '../order-card/order-card';
-import { getOrder } from '../../services/reducers';
+import { getOrder } from '../../services/reducers/order';
 import { BUN_NAME, BLANK_GIF } from '../../utils/constants';
 import { addItem, moveItem, deleteItem } from '../../services/actions';
 
@@ -22,8 +22,7 @@ function BurgerConstructor() {
     const { bun, ingredients } = useSelector((store) => store.items);
     const dispatch = useDispatch();
 
-    // eslint-disable-next-line no-unused-vars
-    const [{ isHover }, dropTarget] = useDrop({
+    const [, dropTarget] = useDrop({
         accept: ['main', 'sauce'],
         drop(item) {
             dispatch(addItem(item));
@@ -32,8 +31,7 @@ function BurgerConstructor() {
             isHover: monitor.isOver(),
         }),
     });
-    // eslint-disable-next-line no-unused-vars
-    const [{ isHoverUpBun }, dropUpBun] = useDrop({
+    const [, dropUpBun] = useDrop({
         accept: 'bun',
         drop(item) {
             dispatch(addItem(item));
@@ -42,8 +40,7 @@ function BurgerConstructor() {
             isHover: monitor.isOver(),
         }),
     });
-    // eslint-disable-next-line no-unused-vars
-    const [{ isHoverBottomUpBun }, dropBottomBun] = useDrop({
+    const [, dropBottomBun] = useDrop({
         accept: 'bun',
         drop(item) {
             dispatch(addItem(item));
@@ -91,7 +88,7 @@ function BurgerConstructor() {
         setShowModal(false);
     };
     const sendOrder = () => {
-        if (bun || ingredients.length) {
+        if (bun && ingredients.length) {
             dispatch(getOrder(bun, ingredients));
             toggleModal();
         }
