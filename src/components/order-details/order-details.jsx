@@ -1,18 +1,13 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import '@ya.praktikum/react-developer-burger-ui-components';
-// import ingridientType from '../../utils/types';
-import { DataContext } from '../../utils/dataContext';
+import { useSelector } from 'react-redux';
 import OrderIcon from '../../images/order_logo.svg';
 import styles from './order-details.module.css';
 
 function OrderDetails() {
-    const {
-        state: {
-            order: { data, isLoading, hasError },
-            error,
-        },
-    } = React.useContext(DataContext);
+    const { isLoading, hasError, error, data } = useSelector(
+        (store) => store.order
+    );
     return (
         <div className={`${styles.order_text} text text_type_main-medium`}>
             {isLoading && (
@@ -25,7 +20,7 @@ function OrderDetails() {
                     Произошла ошибка: {data ? data.message : ''} {error}
                 </p>
             )}
-            {!isLoading && !hasError && data && (
+            {!isLoading && !hasError && data && data.order && (
                 <>
                     <div className="text text_type_digits-large mb-8">
                         {data.order.number}
@@ -47,8 +42,5 @@ function OrderDetails() {
         </div>
     );
 }
-/*
-OrderDetails.propTypes = {
-    onClose: PropTypes.func.isRequired,
-}; */
+
 export default OrderDetails;

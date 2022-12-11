@@ -31,7 +31,9 @@ function Modal(props) {
                     >
                         {text}
                     </div>
-                    <CloseIcon type="primary" onClick={onClose} />
+                    <div className={styles.close_icon}>
+                        <CloseIcon type="primary" onClick={onClose} />
+                    </div>
                 </div>
                 <div className={styles.content}>{children}</div>
             </div>

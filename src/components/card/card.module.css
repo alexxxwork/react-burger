@@ -22,6 +22,7 @@
 }
 .card {
     display: flex;
+    position: relative;
     flex-direction: column;
     flex-wrap: wrap;
     max-width: 272px;
