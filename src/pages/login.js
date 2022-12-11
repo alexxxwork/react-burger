@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, redirect } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {
     EmailInput,
@@ -15,9 +15,10 @@ function Login() {
         password: '',
     });
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const onClick = () => {
         dispatch(getLogin(form));
-        return redirect('/');
+        navigate('/');
     };
     React.useEffect(() => {
         dispatch(getUser());

@@ -34,3 +34,8 @@
     text-decoration: none;
     color: white;
 }
+.link_inactive,
+.link_inactive:visited {
+    text-decoration: none;
+    color: var(--text-inactive-color);
+}

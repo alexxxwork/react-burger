@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import {
     Input,
     PasswordInput,
@@ -39,7 +39,9 @@ function Profile() {
                     История заказов
                 </div>
                 <div className="text text_type_main-medium text_color_inactive pt-4 pb-4">
-                    Выход
+                    <NavLink to="/logout" className={styles.link_inactive}>
+                        Выход
+                    </NavLink>
                 </div>
                 <div className="text text_type_main-default text_color_inactive mt-20">
                     В этом разделе вы сможете изменить свои персональные данные

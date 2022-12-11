@@ -19,6 +19,7 @@ import styles from './app.module.css';
 import ForgotPassword from '../../pages/forgot-password';
 import ResetPassword from '../../pages/reset-password';
 import Profile from '../../pages/profile';
+import Logout from '../../pages/logout';
 
 const store = configureStore({
     reducer: rootReducer,
@@ -28,9 +29,9 @@ const store = configureStore({
 function App() {
     return (
         <Provider store={store}>
-            <AppHeader />
-            <main className={styles.main}>
-                <Router>
+            <Router>
+                <AppHeader />
+                <main className={styles.main}>
                     <Routes>
                         <Route
                             path="/"
@@ -52,10 +53,11 @@ function App() {
                             element={<ResetPassword />}
                         />
                         <Route path="/profile" element={<Profile />} />
+                        <Route path="/logout" element={<Logout />} />
                         <Route path="*" element={<Route404 />} />
                     </Routes>
-                </Router>
-            </main>
+                </main>
+            </Router>
         </Provider>
     );
 }

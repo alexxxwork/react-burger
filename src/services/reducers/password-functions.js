@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import { fetchWithRefresh } from '../../utils/api';
+import { fetchWithRefresh, checkResponse } from '../../utils/api';
 import {
     getPasswordResetSuccess,
     getPasswordResetFailed,
@@ -19,6 +19,7 @@ import {
     PASSWORD_RESET_PATH,
     REGISTER_PATH,
     LOGIN_PATH,
+    LOGOUT_PATH,
     USER_PATH,
     API_BASE,
 } from '../../utils/constants';
@@ -165,6 +166,19 @@ export function getUser() {
             .catch((err) => {
                 dispatch(getUserFailed(err));
             });
+    };
+}
+export function getLogout() {
+    return () => {
+        const { refreshToken } = localStorage;
+        fetch(`${API_BASE}${LOGOUT_PATH}`, {
+            method: 'post',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token: refreshToken }),
+        }).then(checkResponse);
     };
 }
 export const getPasswordReducer = createReducer(initialState, (builder) => {
