@@ -74,14 +74,16 @@ function BurgerIngredients() {
                 </p>
             )}
             {hasError && (
-                <p className={`text text_type_main-medium ${styles.centered}`}>
+                <p
+                    className={`text text_type_main-medium pt-5 ${styles.centered}`}
+                >
                     Не удалось загрузить данные
                 </p>
             )}
             {!isLoading && !hasError && data.length && (
                 <section className={styles.container}>
                     {showModal && currentItem && (
-                        <Modal text="Детали ингридиента" onClose={closeDetails}>
+                        <Modal text="Детали ингредиента" onClose={closeDetails}>
                             <IngredientDetails item={currentItem} />
                         </Modal>
                     )}

@@ -17,3 +17,36 @@ export const addItem = createAction('items/add_item', (item) => ({
 export const getOrderRequest = createAction('order/GET_REQUEST');
 export const getOrderSuccess = createAction('order/GET_SUCCESS');
 export const getOrderFailed = createAction('order/GET_FAILED');
+
+export const getPasswordResetSuccess = createAction(
+    'passwordReset/GET_SUCCESS'
+);
+export const getPasswordResetFailed = createAction('passwordReset/GET_FAILED');
+export const getPasswordRestoreSuccess = createAction(
+    'passwordRestore/GET_SUCCESS'
+);
+export const getPasswordRestoreFailed = createAction(
+    'passwordRestore/GET_FAILED'
+);
+export const getRegisterSuccess = createAction(
+    'register/GET_SUCCESS',
+    (item) => ({
+        payload: {
+            ...item,
+            accessToken: item.accessToken.replace('Bearer ', ''),
+        },
+    })
+);
+export const getRegisterFailed = createAction('register/GET_FAILED');
+
+export const getLoginSuccess = createAction('login/GET_SUCCESS', (item) => ({
+    payload: {
+        ...item,
+        accessToken: item.accessToken.replace('Bearer ', ''),
+    },
+}));
+export const getLoginFailed = createAction('login/GET_FAILED');
+
+export const getUserSuccess = createAction('user/GET_SUCCESS');
+export const getUserFailed = createAction('user/GET_FAILED');
+export const setUser = createAction('user/set');

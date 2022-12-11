@@ -67,20 +67,24 @@ function BurgerConstructor() {
 
     let top = null;
     let bottom = null;
+    const setBuns = (abun) => {
+        if (abun) {
+            top = abun;
+            bottom = { ...top, name: `${top.name} (низ)` };
+            top = { ...top, name: `${top.name} (верх)` };
+        } else {
+            top = {
+                name: '',
+                type: BUN_NAME,
+                price: null,
+                image: BLANK_GIF,
+            };
+            bottom = top;
+        }
+    };
 
-    if (bun) {
-        top = bun;
-        bottom = { ...top, name: `${top.name} (низ)` };
-        top = { ...top, name: `${top.name} (верх)` };
-    } else {
-        top = {
-            name: '',
-            type: BUN_NAME,
-            price: null,
-            image: BLANK_GIF,
-        };
-        bottom = top;
-    }
+    setBuns(bun);
+
     const toggleModal = () => {
         setShowModal((prevState) => !prevState);
     };

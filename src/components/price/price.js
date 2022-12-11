@@ -19,9 +19,7 @@ function Price(props) {
 }
 
 Price.propTypes = {
-    // eslint-disable-next-line react/no-unused-prop-types
     value: PropTypes.number.isRequired,
-    // eslint-disable-next-line react/no-unused-prop-types
     big: PropTypes.bool,
 };
 Price.defaultProps = {
