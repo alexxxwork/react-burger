@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     EmailInput,
     PasswordInput,
@@ -16,6 +16,7 @@ function Login() {
     });
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const user = useSelector((s) => s.password.user);
     const onClick = () => {
         dispatch(getLogin(form));
         navigate('/');
@@ -23,6 +24,7 @@ function Login() {
     React.useEffect(() => {
         dispatch(getUser());
     }, [dispatch]);
+    if (user) navigate('/');
 
     return (
         <div className={`${styles.block} pt-5 text text_type_main-medium`}>

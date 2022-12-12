@@ -35,10 +35,7 @@ export const initialState = {
     accessToken: '',
     refreshToken: '',
     error: '',
-    user: {
-        email: '',
-        name: '',
-    },
+    user: null,
     password: '',
 };
 export function getRestorePassword(email) {
@@ -169,7 +166,7 @@ export function getUser() {
     };
 }
 export function getLogout() {
-    return () => {
+    return (dispatch) => {
         const { refreshToken } = localStorage;
         fetch(`${API_BASE}${LOGOUT_PATH}`, {
             method: 'post',
@@ -179,6 +176,8 @@ export function getLogout() {
             },
             body: JSON.stringify({ token: refreshToken }),
         }).then(checkResponse);
+        dispatch(setUser(null));
+        localStorage.clear();
     };
 }
 export const getPasswordReducer = createReducer(initialState, (builder) => {

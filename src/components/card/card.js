@@ -1,9 +1,10 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable no-underscore-dangle */
+// Из-за поля _id в объекте item
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
+import { Link } from 'react-router-dom';
 import Price from '../price/price';
 import ingridientType from '../../utils/types';
 // import Modal from '../modal/modal';
@@ -26,16 +27,17 @@ function Card({ item, onClick, count, draggable }) {
             style={{ opacity }}
         >
             {count !== 0 && <Counter count={count} size="default" />}
-            <img
-                src={item.image}
-                alt={item.name}
-                className="ml-4 mr-4"
+            <Link
+                to={`/ingredients/${item._id}`}
                 onClick={onClick}
-            />
-            <div className={styles.card_text}>
-                <Price value={item.price} />
-            </div>
-            <div className={styles.card_text}>{item.name}</div>
+                className={styles.link}
+            >
+                <img src={item.image} alt={item.name} className="ml-4 mr-4" />
+                <div className={styles.card_text}>
+                    <Price value={item.price} />
+                </div>
+                <div className={styles.card_text}>{item.name}</div>
+            </Link>
         </div>
     );
 }

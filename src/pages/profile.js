@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import {
     Input,
     PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getUser } from '../services/reducers/password-functions';
+// import { getUser } from '../services/reducers/password-functions';
 import { setUser } from '../services/actions';
 import styles from './pages.module.css';
 
@@ -13,19 +13,14 @@ import styles from './pages.module.css';
 
 function Profile() {
     const [form, setForm] = useState({
-        name: '',
-        email: '',
         password: '',
     });
 
-    // const onClick = () => {
-    //    dispatch(getRegister(form));
-    // };
     const dispatch = useDispatch();
     const user = useSelector((s) => s.password.user);
-    useEffect(() => {
-        dispatch(getUser());
-    }, [dispatch]);
+    // useEffect(() => {
+    //     dispatch(getUser());
+    // }, [dispatch]);
 
     return (
         <div className={styles.profileBlock}>

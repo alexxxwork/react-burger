@@ -20,6 +20,8 @@ import ForgotPassword from '../../pages/forgot-password';
 import ResetPassword from '../../pages/reset-password';
 import Profile from '../../pages/profile';
 import Logout from '../../pages/logout';
+import ProtectedRoute from '../protected-route/protected-route';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
 const store = configureStore({
     reducer: rootReducer,
@@ -45,6 +47,10 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route
+                            path="/ingredients/:id"
+                            element={<IngredientDetails />}
+                        />
+                        <Route
                             path="/forgot-password"
                             element={<ForgotPassword />}
                         />
@@ -52,7 +58,9 @@ function App() {
                             path="/reset-password"
                             element={<ResetPassword />}
                         />
-                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/profile" element={<ProtectedRoute />}>
+                            <Route path="/profile" element={<Profile />} />
+                        </Route>
                         <Route path="/logout" element={<Logout />} />
                         <Route path="*" element={<Route404 />} />
                     </Routes>

@@ -1,10 +1,18 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-details.module.css';
 import ingridientType from '../../utils/types';
 
-function IngredientDetails({ item }) {
+function IngredientDetails(props) {
+    let { item } = props;
+    const { id } = useParams();
+    const { data } = useSelector((s) => s.fetch);
+    if (!item && id && data.length) {
+        // eslint-disable-next-line no-underscore-dangle
+        [item] = data.filter((i) => i._id === id);
+    }
     return (
         <div className={`${styles.card_details}`}>
             <img
@@ -49,7 +57,10 @@ function IngredientDetails({ item }) {
     );
 }
 IngredientDetails.propTypes = {
-    item: ingridientType.isRequired,
+    item: ingridientType,
+};
+IngredientDetails.defaultProps = {
+    item: null,
 };
 
 export default IngredientDetails;

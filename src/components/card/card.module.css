@@ -38,3 +38,8 @@
     object-fit: contain;
     align-self: center;
 }
+.link,
+.link:visited {
+    text-decoration: none;
+    color: white;
+}

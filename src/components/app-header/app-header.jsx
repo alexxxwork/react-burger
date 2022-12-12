@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
     Logo,
     BurgerIcon,
@@ -42,12 +43,14 @@ function AppHeader() {
                     <Logo />
                 </div>
                 <div className={styles.right_block}>
-                    <HeaderElement>
-                        <div className={styles.element}>
-                            <ProfileIcon type="primary" />
-                        </div>
-                        <div className={styles.element}>Личный кабинет</div>
-                    </HeaderElement>
+                    <NavLink to="/profile" className={styles.element}>
+                        <HeaderElement>
+                            <div className={styles.element}>
+                                <ProfileIcon type="primary" />
+                            </div>
+                            <div className={styles.element}>Личный кабинет</div>
+                        </HeaderElement>
+                    </NavLink>
                 </div>
             </div>
         </header>
