@@ -1,6 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import { addItem, moveItem, deleteItem, setCurrentItem } from '../actions';
+import {
+    addItem,
+    moveItem,
+    deleteItem,
+    setCurrentItem,
+    showModal,
+} from '../actions';
 import { BUN_NAME } from '../../utils/constants';
 
 export const initialState = {
@@ -8,6 +14,7 @@ export const initialState = {
     bun: null,
     ingredients: [],
     error: null,
+    showModal: false,
 };
 
 export const itemsReducer = createReducer(initialState, (builder) => {
@@ -29,5 +36,8 @@ export const itemsReducer = createReducer(initialState, (builder) => {
         .addCase(addItem, (state, action) => {
             if (action.payload.type === BUN_NAME) state.bun = action.payload;
             else state.ingredients.push(action.payload);
+        })
+        .addCase(showModal, (state, action) => {
+            state.showModal = action.payload;
         });
 });

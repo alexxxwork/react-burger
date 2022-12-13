@@ -50,3 +50,4 @@ export const getLoginFailed = createAction('login/GET_FAILED');
 export const getUserSuccess = createAction('user/GET_SUCCESS');
 export const getUserFailed = createAction('user/GET_FAILED');
 export const setUser = createAction('user/set');
+export const showModal = createAction('items/SHOW_MODAL');

@@ -3,32 +3,35 @@ import { useState, useEffect, useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import Card from '../card/card';
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
+// import Modal from '../modal/modal';
+// import IngredientDetails from '../ingredient-details/ingredient-details';
 import { getItems } from '../../services/reducers/get-items';
-import { setCurrentItem } from '../../services/actions';
+import { setCurrentItem, showModal } from '../../services/actions';
 import styles from './burger-ingredients.module.css';
 import { BUN_NAME, SAUCE_NAME, MAIN_NAME } from '../../utils/constants';
 
 function BurgerIngredients() {
     const [current, setCurrent] = useState('buns');
-    const [showModal, setShowModal] = useState(false);
-    const { currentItem, ingredients, bun } = useSelector((s) => s.items);
+    // const [showModal, setShowModal] = useState(false);
+    const { ingredients, bun } = useSelector((s) => s.items);
     const { data, isLoading, hasError } = useSelector((s) => s.fetch);
     const refs = { buns: useRef(), main: useRef(), sauce: useRef() };
     const scroll = useRef();
+    // const isShowModal = useSelector((s) => s.items.showModal);
 
     const dispatch = useDispatch();
     useEffect(() => dispatch(getItems()), [dispatch]);
 
     const toggleDetails = (item) => {
         dispatch(setCurrentItem(item));
-        setShowModal((prevState) => !prevState);
+        // setShowModal((prevState) => !prevState);
+        dispatch(showModal(true));
     };
-    const closeDetails = () => {
-        setShowModal(false);
+    /* const closeDetails = () => {
+        // setShowModal(false);
+        dispatch(showModal(false));
         dispatch(setCurrentItem(null));
-    };
+    }; */
 
     const onScroll = () => {
         let delta = scroll.current.getBoundingClientRect().top;
@@ -82,11 +85,11 @@ function BurgerIngredients() {
             )}
             {!isLoading && !hasError && data.length && (
                 <section className={styles.container}>
-                    {showModal && currentItem && (
+                    {/* isShowModal && currentItem && (
                         <Modal text="Детали ингредиента" onClose={closeDetails}>
                             <IngredientDetails item={currentItem} />
                         </Modal>
-                    )}
+                    ) */}
                     <div
                         className={`${styles.header} text text_type_main-default`}
                     >

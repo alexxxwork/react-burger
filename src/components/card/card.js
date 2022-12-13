@@ -4,12 +4,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Price from '../price/price';
 import ingridientType from '../../utils/types';
-// import Modal from '../modal/modal';
 import styles from './card.module.css';
-// import IngredientDetails from '../ingredient-details/ingredient-details';
 
 function Card({ item, onClick, count, draggable }) {
     const [{ opacity }, ref] = useDrag({
@@ -19,6 +17,8 @@ function Card({ item, onClick, count, draggable }) {
             opacity: monitor.isDragging() ? 0.9 : 1,
         }),
     });
+    const location = useLocation();
+
     return (
         <div
             className={`${styles.card} ml-4 mr-2`}
@@ -29,6 +29,7 @@ function Card({ item, onClick, count, draggable }) {
             {count !== 0 && <Counter count={count} size="default" />}
             <Link
                 to={`/ingredients/${item._id}`}
+                state={{ background: location }}
                 onClick={onClick}
                 className={styles.link}
             >

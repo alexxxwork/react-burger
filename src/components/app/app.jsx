@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import '@ya.praktikum/react-developer-burger-ui-components';
@@ -22,6 +22,8 @@ import Profile from '../../pages/profile';
 import Logout from '../../pages/logout';
 import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import Modal from '../modal/modal';
+// import { setCurrentItem, showModal } from '../../services/actions';
 
 const store = configureStore({
     reducer: rootReducer,
@@ -29,43 +31,57 @@ const store = configureStore({
 });
 
 function App() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const background = location.state && location.state.background;
+    const onClose = () => navigate(-1);
     return (
         <Provider store={store}>
-            <Router>
-                <AppHeader />
-                <main className={styles.main}>
+            <AppHeader />
+            <main className={styles.main}>
+                <Routes location={background || location}>
+                    <Route
+                        path="/"
+                        element={
+                            <DndProvider backend={HTML5Backend}>
+                                <BurgerIngredients />
+                                <BurgerConstructor />
+                            </DndProvider>
+                        }
+                    />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route
+                        path="/ingredients/:id"
+                        element={<IngredientDetails />}
+                    />
+                    <Route
+                        path="/forgot-password"
+                        element={<ForgotPassword />}
+                    />
+                    <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route path="/profile" element={<ProtectedRoute />}>
+                        <Route path="/profile" element={<Profile />} />
+                    </Route>
+                    <Route path="/logout" element={<Logout />} />
+                    <Route path="*" element={<Route404 />} />
+                </Routes>
+                {background && (
                     <Routes>
                         <Route
-                            path="/"
+                            path="/ingredients/:id"
                             element={
-                                <DndProvider backend={HTML5Backend}>
-                                    <BurgerIngredients />
-                                    <BurgerConstructor />
-                                </DndProvider>
+                                <Modal
+                                    text="Детали ингредиента"
+                                    onClose={onClose}
+                                >
+                                    <IngredientDetails />
+                                </Modal>
                             }
                         />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route
-                            path="/ingredients/:id"
-                            element={<IngredientDetails />}
-                        />
-                        <Route
-                            path="/forgot-password"
-                            element={<ForgotPassword />}
-                        />
-                        <Route
-                            path="/reset-password"
-                            element={<ResetPassword />}
-                        />
-                        <Route path="/profile" element={<ProtectedRoute />}>
-                            <Route path="/profile" element={<Profile />} />
-                        </Route>
-                        <Route path="/logout" element={<Logout />} />
-                        <Route path="*" element={<Route404 />} />
                     </Routes>
-                </main>
-            </Router>
+                )}
+            </main>
         </Provider>
     );
 }
