@@ -1,12 +1,9 @@
 import React from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
+import { Provider, useDispatch } from 'react-redux';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
-
-import rootReducer from '../../services/reducers';
 
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
@@ -23,18 +20,17 @@ import Logout from '../../pages/logout';
 import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-// import { setCurrentItem, showModal } from '../../services/actions';
-
-const store = configureStore({
-    reducer: rootReducer,
-    devTools: process.env.NODE_ENV !== 'production',
-});
+import store from '../../services/store';
+import { getItems } from '../../services/actions';
 
 function App() {
     const location = useLocation();
     const navigate = useNavigate();
     const background = location.state && location.state.background;
     const onClose = () => navigate(-1);
+    const dispatch = useDispatch();
+    React.useEffect(() => dispatch(getItems()), [dispatch]);
+
     return (
         <Provider store={store}>
             <AppHeader />

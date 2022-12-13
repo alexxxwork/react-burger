@@ -1,51 +1,67 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     Input,
     PasswordInput,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getResetPassword } from '../services/reducers/password-functions';
+import { getResetPassword } from '../services/actions';
 import styles from './pages.module.css';
 
 function ResetPassword() {
-    // const onRegisterClick = () => <Link to="/" />;
     const [form, setForm] = React.useState({
         password: '',
         token: '',
     });
     const dispatch = useDispatch();
-    const onClick = () => {
-        dispatch(getResetPassword(form.password, form.token));
+    const navigate = useNavigate();
+    const location = useLocation();
+    const err = useSelector((s) => s.password.resetpwdata?.success);
+
+    const onClick = async () => {
+        await dispatch(getResetPassword(form.password, form.token));
+
+        if (!err) navigate('/');
     };
+
+    React.useEffect(() => {
+        if (
+            !(
+                location.state?.from?.pathname &&
+                location.state?.from?.pathname === '/forgot-password'
+            )
+        )
+            navigate('/forgot-password');
+    }, [location, navigate]);
 
     return (
         <div className={`${styles.block} pt-5 text text_type_main-medium`}>
-            <div className="p-3">Восстановление пароля</div>
-            <style>{'label { top: 8px !important; }'}</style>
-            <PasswordInput
-                placeholder="Введите новый пароль"
-                extraClass="p-3"
-                value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-            />
-            <Input
-                placeholder="Введите код из письма"
-                extraClass="p-3"
-                value={form.token}
-                onChange={(e) => setForm({ ...form, token: e.target.value })}
-            />
-            <div className="pt-3 pb-20">
-                <Button
-                    htmlType="button"
-                    type="primary"
-                    size="medium"
-                    onClick={onClick}
-                >
-                    Сохранить
-                </Button>
-            </div>
+            <form onSubmit={onClick} className={styles.form}>
+                <div className="p-3">Восстановление пароля</div>
+                {err && <div>Ошибка проверьте введенный код</div>}
+                <PasswordInput
+                    placeholder="Введите новый пароль"
+                    extraClass="p-3"
+                    value={form.password}
+                    onChange={(e) =>
+                        setForm({ ...form, password: e.target.value })
+                    }
+                />
+                <Input
+                    placeholder="Введите код из письма"
+                    extraClass="p-3"
+                    value={form.token}
+                    onChange={(e) =>
+                        setForm({ ...form, token: e.target.value })
+                    }
+                />
+                <div className="pt-3 pb-20">
+                    <Button htmlType="submit" type="primary" size="medium">
+                        Сохранить
+                    </Button>
+                </div>
+            </form>
             <div
                 className={`${styles.centered} text text_type_main-default text_color_inactive`}
             >

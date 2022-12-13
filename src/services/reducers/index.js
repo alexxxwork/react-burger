@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { itemsReducer } from './items';
 import { getItemsReducer } from './get-items';
 import { orderReducer } from './order';
-import { getPasswordReducer } from './password-functions';
+import { getPasswordReducer } from './password';
 
 const rootReducer = combineReducers({
     items: itemsReducer,

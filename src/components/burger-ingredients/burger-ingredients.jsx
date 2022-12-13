@@ -1,37 +1,27 @@
 /* eslint-disable no-underscore-dangle */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import Card from '../card/card';
-// import Modal from '../modal/modal';
-// import IngredientDetails from '../ingredient-details/ingredient-details';
-import { getItems } from '../../services/reducers/get-items';
+// import { getItems } from '../../services/reducers/get-items';
 import { setCurrentItem, showModal } from '../../services/actions';
 import styles from './burger-ingredients.module.css';
 import { BUN_NAME, SAUCE_NAME, MAIN_NAME } from '../../utils/constants';
 
 function BurgerIngredients() {
     const [current, setCurrent] = useState('buns');
-    // const [showModal, setShowModal] = useState(false);
     const { ingredients, bun } = useSelector((s) => s.items);
     const { data, isLoading, hasError } = useSelector((s) => s.fetch);
     const refs = { buns: useRef(), main: useRef(), sauce: useRef() };
     const scroll = useRef();
-    // const isShowModal = useSelector((s) => s.items.showModal);
 
     const dispatch = useDispatch();
-    useEffect(() => dispatch(getItems()), [dispatch]);
+    // useEffect(() => dispatch(getItems()), [dispatch]);
 
     const toggleDetails = (item) => {
         dispatch(setCurrentItem(item));
-        // setShowModal((prevState) => !prevState);
         dispatch(showModal(true));
     };
-    /* const closeDetails = () => {
-        // setShowModal(false);
-        dispatch(showModal(false));
-        dispatch(setCurrentItem(null));
-    }; */
 
     const onScroll = () => {
         let delta = scroll.current.getBoundingClientRect().top;

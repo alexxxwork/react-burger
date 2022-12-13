@@ -13,9 +13,8 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import OrderCard from '../order-card/order-card';
 import { getOrder } from '../../services/reducers/order';
-import { getUser } from '../../services/reducers/password-functions';
 import { BUN_NAME, BLANK_GIF } from '../../utils/constants';
-import { addItem, moveItem, deleteItem } from '../../services/actions';
+import { addItem, moveItem, deleteItem, getUser } from '../../services/actions';
 
 const initialSum = { value: 0 };
 

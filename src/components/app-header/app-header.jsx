@@ -15,7 +15,7 @@ function AppHeader() {
             <div className={styles.header_container}>
                 <div className={styles.left_block}>
                     <HeaderElement>
-                        <a href="#top" className={styles.element}>
+                        <NavLink to="/" className={styles.element}>
                             <div className={styles.element}>
                                 <BurgerIcon type="primary" />
                             </div>
@@ -24,7 +24,7 @@ function AppHeader() {
                             >
                                 Конструктор
                             </div>
-                        </a>
+                        </NavLink>
                     </HeaderElement>
                     <HeaderElement>
                         <a href="#top" className={styles.element}>

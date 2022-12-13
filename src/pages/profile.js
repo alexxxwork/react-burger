@@ -5,22 +5,19 @@ import {
     Input,
     PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-// import { getUser } from '../services/reducers/password-functions';
-import { setUser } from '../services/actions';
+import { setUser, patchUser } from '../services/actions';
 import styles from './pages.module.css';
 
-// import { getRegister } from '../services/reducers/password-functions';
-
 function Profile() {
+    const dispatch = useDispatch();
+    const user = useSelector((s) => s.password.user);
     const [form, setForm] = useState({
+        name: user?.name,
+        email: user?.email,
         password: '',
     });
 
-    const dispatch = useDispatch();
-    const user = useSelector((s) => s.password.user);
-    // useEffect(() => {
-    //     dispatch(getUser());
-    // }, [dispatch]);
+    const onClick = () => dispatch(patchUser(form));
 
     return (
         <div className={styles.profileBlock}>
@@ -42,32 +39,37 @@ function Profile() {
                     В этом разделе вы сможете изменить свои персональные данные
                 </div>
             </div>
-            <div className="ml-15 mr-15">
-                <Input
-                    placeholder="Имя"
-                    extraClass="p-3"
-                    value={user.name}
-                    onChange={(e) =>
-                        dispatch(setUser({ ...user, name: e.target.value }))
-                    }
-                />
-                <Input
-                    placeholder="Логин"
-                    extraClass="p-3"
-                    value={user.email}
-                    onChange={(e) =>
-                        dispatch(setUser({ ...user, email: e.target.value }))
-                    }
-                />
-                <PasswordInput
-                    placeholder="Пароль"
-                    extraClass="p-3"
-                    value={form.password}
-                    onChange={(e) =>
-                        setForm({ ...form, password: e.target.value })
-                    }
-                />
-            </div>
+            <form onSubmit={onClick} className={styles.form}>
+                <div className="ml-15 mr-15">
+                    <Input
+                        placeholder="Имя"
+                        extraClass="p-3"
+                        value={user.name}
+                        onChange={(e) =>
+                            dispatch(setUser({ ...user, name: e.target.value }))
+                        }
+                        onKeyDown={(e) => e.key === 'Enter' && onclick()}
+                    />
+                    <Input
+                        placeholder="Логин"
+                        extraClass="p-3"
+                        value={user.email}
+                        onChange={(e) =>
+                            dispatch(
+                                setUser({ ...user, email: e.target.value })
+                            )
+                        }
+                    />
+                    <PasswordInput
+                        placeholder="Пароль"
+                        extraClass="p-3"
+                        value={form.password}
+                        onChange={(e) =>
+                            setForm({ ...form, password: e.target.value })
+                        }
+                    />
+                </div>
+            </form>
             <div className={styles.leftBlock} />
         </div>
     );

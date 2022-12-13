@@ -1,19 +1,19 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-details.module.css';
 import ingridientType from '../../utils/types';
-import { getItems } from '../../services/reducers/get-items';
+// import { getItems } from '../../services/reducers/get-items';
 
 function IngredientDetails(props) {
     let { item } = props;
     const { id } = useParams();
-    const dispatch = useDispatch();
-    const datalength = useSelector((s) => s.fetch.data.length);
-    React.useEffect(() => {
-        if (!datalength) dispatch(getItems());
-    }, [dispatch, datalength]);
+    // const dispatch = useDispatch();
+    // const datalength = useSelector((s) => s.fetch.data.length);
+    // React.useEffect(() => {
+    //     if (!datalength) dispatch(getItems());
+    // }, [dispatch, datalength]);
 
     const { data } = useSelector((s) => s.fetch);
     if (!item && id && data.length) {

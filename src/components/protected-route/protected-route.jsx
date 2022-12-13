@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, Navigate } from 'react-router-dom';
-import { getUser } from '../../services/reducers/password-functions';
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
+import { getUser } from '../../services/actions';
 
 function ProtectedRoute() {
-    // const [isUserLoaded, setUserLoaded] = useState(false);
     const dispatch = useDispatch();
+    const location = useLocation();
     const user = useSelector((s) => s.password.user);
 
     const init = async () => {
@@ -22,9 +22,14 @@ function ProtectedRoute() {
 
     const err = useSelector((s) => s.password.hasError.user);
     if (err) {
-        return null;
+        delete localStorage.refreshToken;
+        return <Navigate to="/login" state={{ from: location }} />;
     }
-    return user ? <Outlet /> : <Navigate to="/login" />;
+    return user ? (
+        <Outlet />
+    ) : (
+        <Navigate to="/login" state={{ from: location }} />
+    );
 }
 
 export default ProtectedRoute;

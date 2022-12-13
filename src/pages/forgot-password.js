@@ -1,11 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {
     EmailInput,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getRestorePassword } from '../services/reducers/password-functions';
+import { getRestorePassword } from '../services/actions';
 import styles from './pages.module.css';
 
 function ForgotPassword() {
@@ -13,8 +13,15 @@ function ForgotPassword() {
         email: '',
     });
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const onClick = () => {
         dispatch(getRestorePassword(form.email));
+        navigate('/reset-password', {
+            replace: true,
+            state: { from: location },
+        });
     };
     return (
         <div className={`${styles.block} pt-5 text text_type_main-medium`}>
