@@ -7,7 +7,7 @@ export const getItemsFailed = createAction('items/GET_FAILED');
 
 export function getItems() {
     return (dispatch) => {
-        dispatch(getItemRequest);
+        dispatch(getItemRequest());
         fetch(API_URL)
             .then(async (res) => {
                 if (!res.ok) {

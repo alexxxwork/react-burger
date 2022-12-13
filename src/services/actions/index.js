@@ -11,6 +11,8 @@ import {
     getOrderRequest,
     getOrderSuccess,
     getOrderFailed,
+    getOrderClear,
+    clearItems,
 } from './get-order';
 import {
     getLogin,
@@ -34,7 +36,14 @@ import {
 } from './password-functions';
 
 export { getItemRequest, getItemsSuccess, getItemsFailed, getItems };
-export { getOrder, getOrderRequest, getOrderSuccess, getOrderFailed };
+export {
+    getOrder,
+    getOrderRequest,
+    getOrderSuccess,
+    getOrderFailed,
+    getOrderClear,
+    clearItems,
+};
 export {
     getResetPassword,
     getRestorePassword,
@@ -59,6 +68,7 @@ export {
 export const moveItem = createAction('items/move_item');
 export const deleteItem = createAction('items/delete_item');
 export const setCurrentItem = createAction('items/set_current');
+
 export const addItem = createAction('items/add_item', (item) => ({
     payload: {
         ...item,

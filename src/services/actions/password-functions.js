@@ -68,7 +68,7 @@ export function getRestorePassword(email) {
 
 export function getResetPassword(password, token) {
     return (dispatch) => {
-        dispatch(getPasswordResetClear);
+        dispatch(getPasswordResetClear());
         fetch(`${API_BASE}${PASSWORD_RESET_PATH}`, {
             method: 'post',
             headers: {

@@ -5,10 +5,12 @@ import { ORDER_URL } from '../../utils/constants';
 export const getOrderRequest = createAction('order/GET_REQUEST');
 export const getOrderSuccess = createAction('order/GET_SUCCESS');
 export const getOrderFailed = createAction('order/GET_FAILED');
+export const getOrderClear = createAction('order/GET_CLEAR');
+export const clearItems = createAction('order/clear');
 
 export function getOrder(bun, ingredients) {
     return (dispatch) => {
-        dispatch(getOrderRequest);
+        dispatch(getOrderRequest());
         fetch(ORDER_URL, {
             method: 'post',
             headers: {
@@ -38,6 +40,7 @@ export function getOrder(bun, ingredients) {
             })
             .then((data) => {
                 dispatch(getOrderSuccess(data));
+                dispatch(clearItems());
             })
             .catch((err) => {
                 dispatch(getOrderFailed(err));

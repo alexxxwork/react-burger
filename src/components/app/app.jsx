@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { Provider, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
@@ -20,7 +20,6 @@ import Logout from '../../pages/logout';
 import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-import store from '../../services/store';
 import { getItems } from '../../services/actions';
 
 function App() {
@@ -32,7 +31,7 @@ function App() {
     React.useEffect(() => dispatch(getItems()), [dispatch]);
 
     return (
-        <Provider store={store}>
+        <>
             <AppHeader />
             <main className={styles.main}>
                 <Routes location={background || location}>
@@ -78,7 +77,7 @@ function App() {
                     </Routes>
                 )}
             </main>
-        </Provider>
+        </>
     );
 }
 

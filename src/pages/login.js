@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     EmailInput,
@@ -15,18 +15,19 @@ function Login() {
         password: '',
     });
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const location = useLocation();
 
     const user = useSelector((s) => s.password.user);
     const onClick = () => {
         dispatch(getLogin(form));
-        // navigate(location?.state?.from || '/');
     };
     React.useEffect(() => {
         dispatch(getUser());
     }, [dispatch]);
-    if (user) navigate(location?.state?.from || '/');
+
+    // if (user) navigate(location?.state?.from || '/');
+    if (user) return <Navigate to={location?.state?.from || '/'} />;
 
     return (
         <div className={`${styles.block} pt-5 text text_type_main-medium`}>

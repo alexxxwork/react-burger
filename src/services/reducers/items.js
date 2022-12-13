@@ -4,6 +4,7 @@ import {
     addItem,
     moveItem,
     deleteItem,
+    clearItems,
     setCurrentItem,
     showModal,
 } from '../actions';
@@ -39,5 +40,9 @@ export const itemsReducer = createReducer(initialState, (builder) => {
         })
         .addCase(showModal, (state, action) => {
             state.showModal = action.payload;
+        })
+        .addCase(clearItems, (state) => {
+            state.bun = null;
+            state.ingredients = [];
         });
 });

@@ -40,7 +40,9 @@ function AppHeader() {
                     </HeaderElement>
                 </div>
                 <div className={styles.logo}>
-                    <Logo />
+                    <NavLink to="/">
+                        <Logo />
+                    </NavLink>
                 </div>
                 <div className={styles.right_block}>
                     <NavLink to="/profile" className={styles.element}>
