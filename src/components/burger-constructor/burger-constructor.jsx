@@ -6,12 +6,14 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
+import { useNavigate } from 'react-router-dom';
 import Price from '../price/price';
 import styles from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import OrderCard from '../order-card/order-card';
 import { getOrder } from '../../services/reducers/order';
+import { getUser } from '../../services/reducers/password-functions';
 import { BUN_NAME, BLANK_GIF } from '../../utils/constants';
 import { addItem, moveItem, deleteItem } from '../../services/actions';
 
@@ -21,6 +23,8 @@ function BurgerConstructor() {
     const [showModal, setShowModal] = useState(false);
     const { bun, ingredients } = useSelector((store) => store.items);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const user = useSelector((s) => s.password.user);
 
     const [, dropTarget] = useDrop({
         accept: ['main', 'sauce'],
@@ -65,6 +69,10 @@ function BurgerConstructor() {
         dispatchSum();
     }, [bun, ingredients]);
 
+    useEffect(() => {
+        dispatch(getUser());
+    }, [dispatch]);
+
     let top = null;
     let bottom = null;
     const setBuns = (abun) => {
@@ -92,6 +100,9 @@ function BurgerConstructor() {
         setShowModal(false);
     };
     const sendOrder = () => {
+        if (!user?.name) {
+            navigate('/login');
+        }
         if (bun && ingredients.length) {
             dispatch(getOrder(bun, ingredients));
             toggleModal();
