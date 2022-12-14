@@ -55,6 +55,9 @@
     text-decoration: none;
     color: white;
 }
+.element_inactive:hover,
+.element_inactive:active,
+.element_inactive:visited,
 .element_inactive {
     align-content: center;
     text-align: center;
@@ -68,6 +71,7 @@
     align-items: center;
     padding: 4px;
     text-decoration: none;
+    color: var(--text-inactive-color);
 }
 .logo {
     display: inline-flex;

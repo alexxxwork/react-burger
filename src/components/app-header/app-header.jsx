@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useMatch } from 'react-router-dom';
 import {
     Logo,
     BurgerIcon,
@@ -10,33 +10,48 @@ import HeaderElement from '../header-element/header-element';
 import styles from './app-header.module.css';
 
 function AppHeader() {
+    const isConstructor = !!useMatch({ path: '/', end: true });
+    const constructorStyle = isConstructor
+        ? styles.element
+        : styles.element_inactive;
+    const isFeed = !!useMatch('/feed');
+    const feedStyle = isFeed ? styles.element : styles.element_inactive;
+    const isProfile = !!useMatch('/profile');
+    const profileStyle = isProfile ? styles.element : styles.element_inactive;
+
     return (
         <header className={styles.header}>
             <div className={styles.header_container}>
                 <div className={styles.left_block}>
                     <HeaderElement>
-                        <NavLink to="/" className={styles.element}>
-                            <div className={styles.element}>
-                                <BurgerIcon type="primary" />
+                        <NavLink to="/" className={constructorStyle}>
+                            <div className={constructorStyle}>
+                                <BurgerIcon
+                                    type={
+                                        isConstructor ? 'primary' : 'secondary'
+                                    }
+                                />
                             </div>
                             <div
-                                className={`${styles.element} text text_type_main-default`}
+                                className={`${constructorStyle} text text_type_main-default`}
                             >
                                 Конструктор
                             </div>
                         </NavLink>
                     </HeaderElement>
                     <HeaderElement>
-                        <a href="#top" className={styles.element}>
-                            <div className={styles.element}>
-                                <ListIcon type="secondary" />
+                        <NavLink to="/feed" className={feedStyle}>
+                            <div className={feedStyle}>
+                                <ListIcon
+                                    type={isFeed ? 'primary' : 'secondary'}
+                                />
                             </div>
                             <div
-                                className={`${styles.element_inactive} text text_type_main-default text_color_inactive`}
+                                className={`${feedStyle} text text_type_main-default text_color_inactive`}
                             >
                                 Лента заказов
                             </div>
-                        </a>
+                        </NavLink>
                     </HeaderElement>
                 </div>
                 <div className={styles.logo}>
@@ -45,12 +60,14 @@ function AppHeader() {
                     </NavLink>
                 </div>
                 <div className={styles.right_block}>
-                    <NavLink to="/profile" className={styles.element}>
+                    <NavLink to="/profile" className={profileStyle}>
                         <HeaderElement>
-                            <div className={styles.element}>
-                                <ProfileIcon type="primary" />
+                            <div className={profileStyle}>
+                                <ProfileIcon
+                                    type={isProfile ? 'primary' : 'secondary'}
+                                />
                             </div>
-                            <div className={styles.element}>Личный кабинет</div>
+                            <div className={profileStyle}>Личный кабинет</div>
                         </HeaderElement>
                     </NavLink>
                 </div>

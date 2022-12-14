@@ -39,6 +39,7 @@ export const fetchWithRefresh = async (url, options) => {
             // повторяем запрос
             return checkResponse(res);
         }
+        delete localStorage.refreshToken;
         return Promise.reject(err);
     }
 };

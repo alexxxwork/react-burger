@@ -21,7 +21,6 @@ function ResetPassword() {
 
     const onClick = async () => {
         await dispatch(getResetPassword(form.password, form.token));
-        // console.log(err);
         if (!(err || typeof err === 'undefined')) navigate('/');
     };
 
@@ -31,8 +30,9 @@ function ResetPassword() {
                 location.state?.from?.pathname &&
                 location.state?.from?.pathname === '/forgot-password'
             )
-        )
+        ) {
             navigate('/forgot-password');
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
