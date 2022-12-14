@@ -6,7 +6,7 @@ import {
     Input,
     PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { setUser, patchUser } from '../services/actions';
+import { patchUser } from '../services/actions';
 import styles from './pages.module.css';
 
 function Profile() {
@@ -20,11 +20,11 @@ function Profile() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        dispatch(patchUser(form));
+        dispatch(patchUser({ name: form.name }));
     };
-    const onChange = (field, event) => {
-        dispatch(setUser({ ...user, [field]: event.target.value }));
-    };
+    // const onChange = (field, event) => {
+    //    dispatch(setUser({ ...user, [field]: event.target.value }));
+    // };
 
     return (
         <div className={styles.profileBlock}>
@@ -52,14 +52,17 @@ function Profile() {
                         placeholder="Имя"
                         extraClass="p-3"
                         value={user.name}
-                        onChange={(e) => onChange('name', e)}
-                        onKeyDown={(e) => e.key === 'Enter' && onclick()}
+                        onChange={(e) =>
+                            setForm({ ...form, name: e.target.value })
+                        }
                     />
                     <Input
                         placeholder="Логин"
                         extraClass="p-3"
                         value={user.email}
-                        onChange={(e) => onChange('email', e)}
+                        onChange={(e) =>
+                            setForm({ ...form, email: e.target.value })
+                        }
                     />
                     <PasswordInput
                         placeholder="Пароль"

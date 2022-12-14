@@ -119,7 +119,6 @@ export function getLogin(form) {
     return (dispatch) => {
         fetch(`${API_BASE}${LOGIN_PATH}`, {
             method: 'post',
-            mode: 'cors',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -142,7 +141,6 @@ export function getUser() {
         if (accessToken)
             fetchWithRefresh(`${API_BASE}${USER_PATH}`, {
                 method: 'get',
-                mode: 'cors',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
@@ -183,7 +181,6 @@ export function getLogout() {
         const { refreshToken } = localStorage;
         fetch(`${API_BASE}${LOGOUT_PATH}`, {
             method: 'post',
-            mode: 'cors',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',

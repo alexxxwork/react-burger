@@ -11,10 +11,9 @@ export function getItems() {
         if (!getStore().data) {
             dispatch(getItemRequest());
             fetch(API_URL, {
-                mode: 'cors',
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                },
+                // headers: {
+                //    'Access-Control-Allow-Origin': '*',
+                // },
             })
                 .then(checkResponse)
                 .then((data) => {
