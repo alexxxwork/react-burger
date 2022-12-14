@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import {
+    Button,
     Input,
     PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -17,7 +18,13 @@ function Profile() {
         password: '',
     });
 
-    const onClick = () => dispatch(patchUser(form));
+    const onSubmit = (e) => {
+        e.preventDefault();
+        dispatch(patchUser(form));
+    };
+    const onChange = (field, event) => {
+        dispatch(setUser({ ...user, [field]: event.target.value }));
+    };
 
     return (
         <div className={styles.profileBlock}>
@@ -39,26 +46,20 @@ function Profile() {
                     В этом разделе вы сможете изменить свои персональные данные
                 </div>
             </div>
-            <form onSubmit={onClick} className={styles.form}>
+            <form onSubmit={onSubmit} className={styles.form}>
                 <div className="ml-15 mr-15">
                     <Input
                         placeholder="Имя"
                         extraClass="p-3"
                         value={user.name}
-                        onChange={(e) =>
-                            dispatch(setUser({ ...user, name: e.target.value }))
-                        }
+                        onChange={(e) => onChange('name', e)}
                         onKeyDown={(e) => e.key === 'Enter' && onclick()}
                     />
                     <Input
                         placeholder="Логин"
                         extraClass="p-3"
                         value={user.email}
-                        onChange={(e) =>
-                            dispatch(
-                                setUser({ ...user, email: e.target.value })
-                            )
-                        }
+                        onChange={(e) => onChange('email', e)}
                     />
                     <PasswordInput
                         placeholder="Пароль"
@@ -68,6 +69,14 @@ function Profile() {
                             setForm({ ...form, password: e.target.value })
                         }
                     />
+                    <div className={styles.buttons}>
+                        <Button htmlType="reset" type="secondary">
+                            Отменить
+                        </Button>
+                        <Button htmlType="submit" extraClass="mr-3">
+                            Сохранить
+                        </Button>
+                    </div>
                 </div>
             </form>
             <div className={styles.leftBlock} />

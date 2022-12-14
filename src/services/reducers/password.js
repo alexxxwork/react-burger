@@ -12,6 +12,8 @@ import {
     getLoginFailed,
     getUserSuccess,
     getUserFailed,
+    getUserUpdateSuccess,
+    getUserUpdateFailed,
     setUser,
 } from '../actions';
 
@@ -22,6 +24,7 @@ export const initialState = {
         register: false,
         login: false,
         user: false,
+        updateUser: false,
     },
     accessToken: '',
     refreshToken: '',
@@ -66,13 +69,14 @@ export const getPasswordReducer = createReducer(initialState, (builder) => {
             state.error = action.payload;
         })
         .addCase(getLoginSuccess, (state, action) => {
-            state.hasError.login = false;
+            state.hasError.login = true;
             if (action.payload.success === true) {
                 state.accessToken = action.payload.accessToken;
                 state.refreshToken = action.payload.refreshToken;
                 state.user = action.payload.user;
                 localStorage.accessToken = state.accessToken;
                 localStorage.refreshToken = state.refreshToken;
+                state.hasError.login = false;
             }
         })
         .addCase(getLoginFailed, (state, action) => {
@@ -87,6 +91,16 @@ export const getPasswordReducer = createReducer(initialState, (builder) => {
         })
         .addCase(getUserFailed, (state, action) => {
             state.hasError.user = true;
+            state.error = action.payload;
+        })
+        .addCase(getUserUpdateSuccess, (state) => {
+            state.hasError.updateUser = false;
+            // if (action.payload.success === true) {
+            //    state.user = action.payload.user;
+            // }
+        })
+        .addCase(getUserUpdateFailed, (state, action) => {
+            state.hasError.updateUser = true;
             state.error = action.payload;
         })
         .addCase(setUser, (state, action) => {

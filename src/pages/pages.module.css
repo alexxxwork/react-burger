@@ -44,3 +44,11 @@
     text-decoration: none;
     color: var(--text-inactive-color);
 }
+.buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: right;
+    gap: 8px;
+    width: 100%;
+}

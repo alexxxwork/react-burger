@@ -27,6 +27,8 @@ import {
     getLoginFailed,
     getUserSuccess,
     getUserFailed,
+    getUserUpdateSuccess,
+    getUserUpdateFailed,
     getUser,
     setUser,
     patchUser,
@@ -64,6 +66,8 @@ export {
     getLoginFailed,
     getUserSuccess,
     getUserFailed,
+    getUserUpdateSuccess,
+    getUserUpdateFailed,
     setUser,
 };
 

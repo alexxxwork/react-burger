@@ -19,7 +19,8 @@ function ResetPassword() {
     const location = useLocation();
     const err = useSelector((s) => s.password.resetpwdata?.success);
 
-    const onClick = async () => {
+    const onSubmit = async (e) => {
+        e.preventDefault();
         await dispatch(getResetPassword(form.password, form.token));
         if (!(err || typeof err === 'undefined')) navigate('/');
     };
@@ -38,7 +39,7 @@ function ResetPassword() {
 
     return (
         <div className={`${styles.block} pt-5 text text_type_main-medium`}>
-            <form onSubmit={onClick} className={styles.form}>
+            <form onSubmit={onSubmit} className={styles.form}>
                 <div className="p-3">Восстановление пароля</div>
                 {err && <div>Ошибка проверьте введенный код</div>}
                 <PasswordInput

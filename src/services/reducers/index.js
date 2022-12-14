@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 import { itemsReducer } from './items';
-import { getItemsReducer } from './get-items';
+import { fetchReducer } from './fetch';
 import { orderReducer } from './order';
 import { getPasswordReducer } from './password';
 
 const rootReducer = combineReducers({
     items: itemsReducer,
     order: orderReducer,
-    fetch: getItemsReducer,
+    fetch: fetchReducer,
     password: getPasswordReducer,
 });
 

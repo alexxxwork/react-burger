@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { createAction } from '@reduxjs/toolkit';
+import { checkResponse } from '../../utils/api';
 import { ORDER_URL } from '../../utils/constants';
 
 export const getOrderRequest = createAction('order/GET_REQUEST');
@@ -13,6 +14,7 @@ export function getOrder(bun, ingredients) {
         dispatch(getOrderRequest());
         fetch(ORDER_URL, {
             method: 'post',
+            mode: 'cors',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -31,13 +33,7 @@ export function getOrder(bun, ingredients) {
                       }
             ),
         })
-            .then(async (res) => {
-                if (!res.ok) {
-                    const json = await res.json();
-                    throw new Error(json);
-                }
-                return res.json();
-            })
+            .then(checkResponse)
             .then((data) => {
                 dispatch(getOrderSuccess(data));
                 dispatch(clearItems());

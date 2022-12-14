@@ -19,19 +19,30 @@ function Login() {
     const location = useLocation();
 
     const user = useSelector((s) => s.password.user);
-    const onClick = () => {
-        dispatch(getLogin(form));
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        await dispatch(getLogin(form));
+    };
+
+    const init = async () => {
+        // Вызовем запрос getUser и изменим состояние isUserLoaded
+        await dispatch(getUser());
     };
     React.useEffect(() => {
-        dispatch(getUser());
-    }, [dispatch]);
+        // При монтировании компонента запросим данные о пользователе
+        init();
+        // Это не работает по-другому
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // if (user) navigate(location?.state?.from || '/');
-    if (user) return <Navigate to={location?.state?.from || '/'} />;
+    if (user) {
+        return <Navigate to={location?.state?.from || '/'} />;
+    }
 
     return (
         <div className={`${styles.block} pt-5 text text_type_main-medium`}>
-            <form onSubmit={onClick} className={styles.form}>
+            <form onSubmit={onSubmit} className={styles.form}>
                 <div className="p-3">Вход</div>
                 <EmailInput
                     placeholder="E-mail"

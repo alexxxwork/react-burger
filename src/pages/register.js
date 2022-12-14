@@ -18,14 +18,15 @@ function Register() {
     });
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const onClick = async () => {
+    const onSubmit = async (e) => {
+        e.preventDefault();
         await dispatch(getRegister(form));
         dispatch(getLogin(form));
         navigate('/');
     };
     return (
         <div className={`${styles.block} pt-5 text text_type_main-medium`}>
-            <form onSubmit={onClick} className={styles.form}>
+            <form onSubmit={onSubmit} className={styles.form}>
                 <div className="p-3">Регистрация</div>
                 <Input
                     placeholder="Имя"

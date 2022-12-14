@@ -6,7 +6,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Price from '../price/price';
 import styles from './burger-constructor.module.css';
 import Modal from '../modal/modal';
@@ -28,6 +28,7 @@ function BurgerConstructor() {
     const { bun, ingredients } = useSelector((store) => store.items);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     const user = useSelector((s) => s.password.user);
 
     const [, dropTarget] = useDrop({
@@ -104,10 +105,12 @@ function BurgerConstructor() {
         setShowModal(false);
     };
     const sendOrder = () => {
-        if (!user?.name) {
-            navigate('/login');
-        }
-        if (bun && ingredients.length) {
+        if (!user) {
+            navigate('/login', {
+                //   replace: true,
+                state: { from: location },
+            });
+        } else if (bun && ingredients.length) {
             dispatch(getOrder(bun, ingredients));
             toggleModal();
         }

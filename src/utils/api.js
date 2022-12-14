@@ -6,6 +6,7 @@ export const checkResponse = (res) =>
 export const refreshToken = () =>
     fetch(`${API_BASE}${TOKEN_PATH}`, {
         method: 'POST',
+        mode: 'cors',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
         },
@@ -19,7 +20,8 @@ export const fetchWithRefresh = async (url, options) => {
         const res = await fetch(url, options);
         return await checkResponse(res);
     } catch (err) {
-        if (err.message === 'jwt expired' || err.message === 'jwt malformed') {
+        if (err.message === 'jwt expired') {
+            // || err.message === 'jwt malformed') {
             const refreshData = await refreshToken(); // обновляем токен
             if (!refreshData.success) {
                 return Promise.reject(refreshData);
@@ -39,7 +41,6 @@ export const fetchWithRefresh = async (url, options) => {
             // повторяем запрос
             return checkResponse(res);
         }
-        delete localStorage.refreshToken;
         return Promise.reject(err);
     }
 };

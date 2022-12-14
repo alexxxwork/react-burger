@@ -42,12 +42,16 @@ export const getLoginFailed = createAction('login/GET_FAILED');
 
 export const getUserSuccess = createAction('user/GET_SUCCESS');
 export const getUserFailed = createAction('user/GET_FAILED');
+export const getUserUpdateSuccess = createAction('user/GET_UPDATE_SUCCESS');
+export const getUserUpdateFailed = createAction('user/GET_UPDATE_FAILED');
+
 export const setUser = createAction('user/SET');
 
 export function getRestorePassword(email) {
     return (dispatch) => {
         fetch(`${API_BASE}${PASSWORD_RESTORE_PATH}`, {
             method: 'post',
+            mode: 'cors',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -71,6 +75,7 @@ export function getResetPassword(password, token) {
         dispatch(getPasswordResetClear());
         fetch(`${API_BASE}${PASSWORD_RESET_PATH}`, {
             method: 'post',
+            mode: 'cors',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -94,6 +99,7 @@ export function getRegister(form) {
     return (dispatch) => {
         fetch(`${API_BASE}${REGISTER_PATH}`, {
             method: 'post',
+            mode: 'cors',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -113,6 +119,7 @@ export function getLogin(form) {
     return (dispatch) => {
         fetch(`${API_BASE}${LOGIN_PATH}`, {
             method: 'post',
+            mode: 'cors',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -121,7 +128,8 @@ export function getLogin(form) {
         })
             .then(checkResponse)
             .then((data) => {
-                dispatch(getLoginSuccess(data));
+                if (data.success) dispatch(getLoginSuccess(data));
+                else dispatch(getLoginFailed());
             })
             .catch((err) => {
                 dispatch(getLoginFailed(err));
@@ -131,20 +139,23 @@ export function getLogin(form) {
 export function getUser() {
     return (dispatch) => {
         const { accessToken } = localStorage;
-        fetchWithRefresh(`${API_BASE}${USER_PATH}`, {
-            method: 'get',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${accessToken}`,
-            },
-        })
-            .then((data) => {
-                dispatch(getUserSuccess(data));
+        if (accessToken)
+            fetchWithRefresh(`${API_BASE}${USER_PATH}`, {
+                method: 'get',
+                mode: 'cors',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`,
+                },
             })
-            .catch((err) => {
-                dispatch(getUserFailed(err));
-            });
+                .then((data) => {
+                    dispatch(getUserSuccess(data));
+                })
+                .catch((err) => {
+                    dispatch(getUserFailed(err));
+                });
+        else dispatch(getUserFailed());
     };
 }
 export function patchUser(form) {
@@ -160,10 +171,10 @@ export function patchUser(form) {
             body: JSON.stringify(form),
         })
             .then((data) => {
-                dispatch(getUserSuccess(data));
+                dispatch(getUserUpdateSuccess(data));
             })
             .catch((err) => {
-                dispatch(getUserFailed(err));
+                dispatch(getUserUpdateFailed(err));
             });
     };
 }
@@ -172,12 +183,15 @@ export function getLogout() {
         const { refreshToken } = localStorage;
         fetch(`${API_BASE}${LOGOUT_PATH}`, {
             method: 'post',
+            mode: 'cors',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ token: refreshToken }),
-        }).then(checkResponse);
+        })
+            .then(checkResponse)
+            .catch(() => {});
         dispatch(setUser(null));
         localStorage.clear();
     };

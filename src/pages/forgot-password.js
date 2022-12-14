@@ -16,16 +16,17 @@ function ForgotPassword() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const onClick = () => {
+    const onSubmit = (e) => {
+        e.preventDefault();
         dispatch(getRestorePassword(form.email));
         navigate('/reset-password', {
-            replace: true,
+            // replace: true,
             state: { from: location },
         });
     };
     return (
         <div className={`${styles.block} pt-5 text text_type_main-medium`}>
-            <form onSubmit={onClick} className={styles.form}>
+            <form onSubmit={onSubmit} className={styles.form}>
                 <div className="p-3">Восстановление пароля</div>
                 <EmailInput
                     placeholder="Укажите e-mail"
