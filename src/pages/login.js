@@ -24,16 +24,13 @@ function Login() {
         await dispatch(getLogin(form));
     };
 
-    const init = async () => {
-        // Вызовем запрос getUser и изменим состояние isUserLoaded
-        await dispatch(getUser());
-    };
     React.useEffect(() => {
+        const init = async () => {
+            await dispatch(getUser());
+        };
         // При монтировании компонента запросим данные о пользователе
         init();
-        // Это не работает по-другому
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [dispatch]);
 
     // if (user) navigate(location?.state?.from || '/');
     if (user) {

@@ -11,9 +11,6 @@ function IngredientDetails(props) {
     const { id } = useParams();
     // const dispatch = useDispatch();
     // const datalength = useSelector((s) => s.fetch.data.length);
-    // React.useEffect(() => {
-    //     if (!datalength) dispatch(getItems());
-    // }, [dispatch, datalength]);
 
     const { data } = useSelector((s) => s.fetch);
     if (!item && id && data.length) {

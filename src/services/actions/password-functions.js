@@ -144,11 +144,13 @@ export function getUser() {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
                     Authorization: `Bearer ${accessToken}`,
                 },
             })
                 .then((data) => {
-                    dispatch(getUserSuccess(data));
+                    if (data.success) dispatch(getUserSuccess(data));
+                    else dispatch(getUserFailed());
                 })
                 .catch((err) => {
                     dispatch(getUserFailed(err));
@@ -161,9 +163,11 @@ export function patchUser(form) {
         const { accessToken } = localStorage;
         fetchWithRefresh(`${API_BASE}${USER_PATH}`, {
             method: 'patch',
+            mode: 'cors',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
                 Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify(form),
@@ -171,8 +175,8 @@ export function patchUser(form) {
             .then((data) => {
                 dispatch(getUserUpdateSuccess(data));
             })
-            .catch((err) => {
-                dispatch(getUserUpdateFailed(err));
+            .catch(() => {
+                dispatch(getUserUpdateFailed());
             });
     };
 }

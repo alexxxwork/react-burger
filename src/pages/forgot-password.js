@@ -20,7 +20,6 @@ function ForgotPassword() {
         e.preventDefault();
         dispatch(getRestorePassword(form.email));
         navigate('/reset-password', {
-            // replace: true,
             state: { from: location },
         });
     };

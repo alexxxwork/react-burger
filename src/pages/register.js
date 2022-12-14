@@ -21,7 +21,7 @@ function Register() {
     const onSubmit = async (e) => {
         e.preventDefault();
         await dispatch(getRegister(form));
-        dispatch(getLogin(form));
+        await dispatch(getLogin(form));
         navigate('/');
     };
     return (

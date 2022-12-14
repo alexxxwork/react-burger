@@ -23,6 +23,7 @@ function ResetPassword() {
         e.preventDefault();
         await dispatch(getResetPassword(form.password, form.token));
         if (!(err || typeof err === 'undefined')) navigate('/');
+        return false;
     };
 
     React.useEffect(() => {
@@ -34,8 +35,7 @@ function ResetPassword() {
         ) {
             navigate('/forgot-password');
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [location.state?.from?.pathname, navigate]);
 
     return (
         <div className={`${styles.block} pt-5 text text_type_main-medium`}>

@@ -44,7 +44,7 @@ export const getPasswordReducer = createReducer(initialState, (builder) => {
             state.error = action.payload;
         })
         .addCase(getPasswordResetSuccess, (state, action) => {
-            state.hasError.restore = false;
+            state.hasError.reset = false;
             state.resetpwdata = action.payload;
         })
         .addCase(getPasswordResetFailed, (state, action) => {

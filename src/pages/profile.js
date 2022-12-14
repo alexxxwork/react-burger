@@ -51,7 +51,7 @@ function Profile() {
                     <Input
                         placeholder="Имя"
                         extraClass="p-3"
-                        value={user.name}
+                        value={form.name}
                         onChange={(e) =>
                             setForm({ ...form, name: e.target.value })
                         }
@@ -59,7 +59,7 @@ function Profile() {
                     <Input
                         placeholder="Логин"
                         extraClass="p-3"
-                        value={user.email}
+                        value={form.email}
                         onChange={(e) =>
                             setForm({ ...form, email: e.target.value })
                         }
