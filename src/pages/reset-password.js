@@ -21,8 +21,8 @@ function ResetPassword() {
 
     const onClick = async () => {
         await dispatch(getResetPassword(form.password, form.token));
-
-        if (!err) navigate('/');
+        // console.log(err);
+        if (!(err || typeof err === 'undefined')) navigate('/');
     };
 
     React.useEffect(() => {
@@ -33,7 +33,8 @@ function ResetPassword() {
             )
         )
             navigate('/forgot-password');
-    }, [location, navigate]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className={`${styles.block} pt-5 text text_type_main-medium`}>
@@ -72,7 +73,6 @@ function ResetPassword() {
                         type="secondary"
                         size="medium"
                         extraClass="pl-2 pt-1 pb-1"
-                        // onClick={onRegisterClick}
                     >
                         Войти
                     </Button>

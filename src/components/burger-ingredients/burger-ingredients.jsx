@@ -16,7 +16,6 @@ function BurgerIngredients() {
     const scroll = useRef();
 
     const dispatch = useDispatch();
-    // useEffect(() => dispatch(getItems()), [dispatch]);
 
     const toggleDetails = (item) => {
         dispatch(setCurrentItem(item));

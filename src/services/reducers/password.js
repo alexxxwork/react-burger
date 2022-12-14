@@ -5,6 +5,7 @@ import {
     getPasswordResetFailed,
     getPasswordRestoreSuccess,
     getPasswordRestoreFailed,
+    getPasswordResetClear,
     getRegisterSuccess,
     getRegisterFailed,
     getLoginSuccess,
@@ -13,7 +14,6 @@ import {
     getUserFailed,
     setUser,
 } from '../actions';
-import { getPasswordResetClear } from '../actions/password-functions';
 
 export const initialState = {
     hasError: {
