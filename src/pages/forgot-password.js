@@ -5,7 +5,7 @@ import {
     EmailInput,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getRestorePassword } from '../services/actions';
+import { auth } from '../services/actions';
 import styles from './pages.module.css';
 
 function ForgotPassword() {
@@ -18,7 +18,7 @@ function ForgotPassword() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        dispatch(getRestorePassword(form.email));
+        dispatch(auth.getRestorePassword(form.email));
         navigate('/reset-password', {
             state: { from: location },
         });

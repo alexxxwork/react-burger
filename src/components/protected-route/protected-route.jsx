@@ -1,30 +1,21 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
-import { getUser } from '../../services/actions';
 
-function ProtectedRoute() {
-    const dispatch = useDispatch();
+function ProtectedRoute({ auth }) {
     const location = useLocation();
-    const user = useSelector((s) => s.password.user);
+    const user = useSelector((s) => s.auth.user);
+    const from = location.state?.from || '/';
 
-    const init = async () => {
-        // Вызовем запрос getUser и изменим состояние isUserLoaded
-        await dispatch(getUser());
-    };
-
-    useEffect(() => {
-        // При монтировании компонента запросим данные о пользователе
-        init();
-        // Это не работает по-другому
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const err = useSelector((s) => s.password.hasError.user);
-    if (err) {
-        delete localStorage.refreshToken;
-        return <Navigate to="/login" state={{ from: location }} />;
+    if (!auth && user) {
+        // ...то отправляем его на предыдущую страницу
+        return <Navigate to={from} />;
     }
+    if (!auth && !user) {
+        // вариант с /login
+        return <Outlet />;
+    }
+
     return user ? (
         <Outlet />
     ) : (
@@ -32,4 +23,7 @@ function ProtectedRoute() {
     );
 }
 
+ProtectedRoute.propTypes = {
+    auth: PropTypes.bool.isRequired,
+};
 export default ProtectedRoute;

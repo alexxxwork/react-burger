@@ -1,26 +1,26 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
     Button,
     Input,
     PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { patchUser } from '../services/actions';
+import { auth } from '../services/actions';
 import styles from './pages.module.css';
 
 function Profile() {
     const dispatch = useDispatch();
-    const user = useSelector((s) => s.password.user);
+    const user = useSelector((s) => s.auth.user);
     const [form, setForm] = useState({
         name: user?.name,
         email: user?.email,
-        password: '',
+        password: user?.password,
     });
 
     const onSubmit = (e) => {
         e.preventDefault();
-        dispatch(patchUser({ name: form.name }));
+        dispatch(auth.patchUser({ name: form.name }));
     };
     // const onChange = (field, event) => {
     //    dispatch(setUser({ ...user, [field]: event.target.value }));
@@ -38,9 +38,16 @@ function Profile() {
                     История заказов
                 </div>
                 <div className="text text_type_main-medium text_color_inactive pt-4 pb-4">
-                    <NavLink to="/logout" className={styles.link_inactive}>
+                    {/* <NavLink to="/logout" className={styles.link_inactive}>
                         Выход
-                    </NavLink>
+                    </NavLink> */}
+                    <a
+                        href="#top"
+                        className={styles.link_inactive}
+                        onClick={() => dispatch(auth.getLogout())}
+                    >
+                        Выход
+                    </a>
                 </div>
                 <div className="text text_type_main-default text_color_inactive mt-20">
                     В этом разделе вы сможете изменить свои персональные данные

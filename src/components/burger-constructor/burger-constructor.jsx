@@ -13,13 +13,8 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import OrderCard from '../order-card/order-card';
 import { BUN_NAME, BLANK_GIF } from '../../utils/constants';
-import {
-    addItem,
-    moveItem,
-    deleteItem,
-    getUser,
-    getOrder,
-} from '../../services/actions';
+import { addItem, moveItem, deleteItem, auth } from '../../services/actions';
+import { getOrder } from '../../services/actions/get-order';
 
 const initialSum = { value: 0 };
 
@@ -29,7 +24,7 @@ function BurgerConstructor() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const user = useSelector((s) => s.password.user);
+    const user = useSelector((s) => s.auth.user);
 
     const [, dropTarget] = useDrop({
         accept: ['main', 'sauce'],
@@ -75,7 +70,7 @@ function BurgerConstructor() {
     }, [bun, ingredients]);
 
     useEffect(() => {
-        dispatch(getUser());
+        dispatch(auth.getUser());
     }, [dispatch]);
 
     let top = null;

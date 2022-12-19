@@ -8,7 +8,7 @@ import {
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './pages.module.css';
-import { getRegister, getLogin } from '../services/actions';
+import { auth } from '../services/actions';
 
 function Register() {
     const [form, setForm] = React.useState({
@@ -20,8 +20,8 @@ function Register() {
     const navigate = useNavigate();
     const onSubmit = async (e) => {
         e.preventDefault();
-        await dispatch(getRegister(form));
-        await dispatch(getLogin(form));
+        await dispatch(auth.getRegister(form));
+        await dispatch(auth.getLogin(form));
         navigate('/');
     };
     return (

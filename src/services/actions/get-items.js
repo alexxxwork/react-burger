@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { checkResponse } from '../../utils/api';
+import { request } from '../../utils/api';
 import { API_URL } from '../../utils/constants';
 
 export const getItemRequest = createAction('items/GET_REQUEST');
@@ -10,12 +10,7 @@ export function getItems() {
     return (dispatch, getStore) => {
         if (!getStore().data) {
             dispatch(getItemRequest());
-            fetch(API_URL, {
-                // headers: {
-                //    'Access-Control-Allow-Origin': '*',
-                // },
-            })
-                .then(checkResponse)
+            request(API_URL, {})
                 .then((data) => {
                     dispatch(getItemsSuccess(data.data));
                 })

@@ -1,21 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import {
-    getPasswordResetSuccess,
-    getPasswordResetFailed,
-    getPasswordRestoreSuccess,
-    getPasswordRestoreFailed,
-    getPasswordResetClear,
-    getRegisterSuccess,
-    getRegisterFailed,
-    getLoginSuccess,
-    getLoginFailed,
-    getUserSuccess,
-    getUserFailed,
-    getUserUpdateSuccess,
-    getUserUpdateFailed,
-    setUser,
-} from '../actions';
+import { auth } from '../actions';
 
 export const initialState = {
     hasError: {
@@ -23,38 +8,38 @@ export const initialState = {
         restore: false,
         register: false,
         login: false,
-        user: false,
         updateUser: false,
     },
     accessToken: '',
     refreshToken: '',
     resetpwdata: null,
     error: '',
+    authChecked: false,
     user: null,
     password: '',
 };
 
-export const getPasswordReducer = createReducer(initialState, (builder) => {
+export const getAuthReducer = createReducer(initialState, (builder) => {
     builder
-        .addCase(getPasswordRestoreSuccess, (state) => {
+        .addCase(auth.getPasswordRestoreSuccess, (state) => {
             state.hasError.restore = false;
         })
-        .addCase(getPasswordRestoreFailed, (state, action) => {
+        .addCase(auth.getPasswordRestoreFailed, (state, action) => {
             state.hasError.restore = true;
             state.error = action.payload;
         })
-        .addCase(getPasswordResetSuccess, (state, action) => {
+        .addCase(auth.getPasswordResetSuccess, (state, action) => {
             state.hasError.reset = false;
             state.resetpwdata = action.payload;
         })
-        .addCase(getPasswordResetFailed, (state, action) => {
+        .addCase(auth.getPasswordResetFailed, (state, action) => {
             state.hasError.reset = true;
             state.error = action.payload;
         })
-        .addCase(getPasswordResetClear, (state) => {
+        .addCase(auth.getPasswordResetClear, (state) => {
             state.hasError.reset = false;
         })
-        .addCase(getRegisterSuccess, (state, action) => {
+        .addCase(auth.getRegisterSuccess, (state, action) => {
             state.hasError.register = false;
             if (action.payload.success === true) {
                 state.accessToken = action.payload.accessToken;
@@ -64,11 +49,11 @@ export const getPasswordReducer = createReducer(initialState, (builder) => {
                 localStorage.refreshToken = state.refreshToken;
             }
         })
-        .addCase(getRegisterFailed, (state, action) => {
+        .addCase(auth.getRegisterFailed, (state, action) => {
             state.hasError.register = true;
             state.error = action.payload;
         })
-        .addCase(getLoginSuccess, (state, action) => {
+        .addCase(auth.getLoginSuccess, (state, action) => {
             state.hasError.login = true;
             if (action.payload.success === true) {
                 state.accessToken = action.payload.accessToken;
@@ -79,31 +64,26 @@ export const getPasswordReducer = createReducer(initialState, (builder) => {
                 state.hasError.login = false;
             }
         })
-        .addCase(getLoginFailed, (state, action) => {
+        .addCase(auth.getLoginFailed, (state, action) => {
             state.hasError.login = true;
             state.error = action.payload;
         })
-        .addCase(getUserSuccess, (state, action) => {
-            state.hasError.user = false;
+        .addCase(auth.getUserSuccess, (state, action) => {
             if (action.payload.success === true) {
                 state.user = action.payload.user;
             }
         })
-        .addCase(getUserFailed, (state, action) => {
-            state.hasError.user = true;
-            state.error = action.payload;
-        })
-        .addCase(getUserUpdateSuccess, (state) => {
+        .addCase(auth.getUserUpdateSuccess, (state) => {
             state.hasError.updateUser = false;
-            // if (action.payload.success === true) {
-            //    state.user = action.payload.user;
-            // }
         })
-        .addCase(getUserUpdateFailed, (state, action) => {
+        .addCase(auth.getUserUpdateFailed, (state, action) => {
             state.hasError.updateUser = true;
             state.error = action.payload;
         })
-        .addCase(setUser, (state, action) => {
+        .addCase(auth.setUser, (state, action) => {
             state.user = action.payload;
+        })
+        .addCase(auth.checkedAuth, (state) => {
+            state.authChecked = true;
         });
 });

@@ -1,6 +1,10 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import { getItemRequest, getItemsSuccess, getItemsFailed } from '../actions';
+import {
+    getItemRequest,
+    getItemsSuccess,
+    getItemsFailed,
+} from '../actions/get-items';
 
 export const initialState = {
     isLoading: false,

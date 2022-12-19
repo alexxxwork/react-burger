@@ -6,7 +6,7 @@ import {
     getOrderSuccess,
     getOrderFailed,
     getOrderClear,
-} from '../actions';
+} from '../actions/get-order';
 
 export const initialState = {
     isLoading: false,

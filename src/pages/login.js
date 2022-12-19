@@ -1,12 +1,13 @@
 import React from 'react';
-import { Link, useLocation, Navigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+// import { Link, useLocation, Navigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {
     EmailInput,
     PasswordInput,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getLogin, getUser } from '../services/actions';
+import { auth } from '../services/actions';
 import styles from './pages.module.css';
 
 function Login() {
@@ -16,26 +17,28 @@ function Login() {
     });
     const dispatch = useDispatch();
     // const navigate = useNavigate();
-    const location = useLocation();
+    // const location = useLocation();
 
-    const user = useSelector((s) => s.password.user);
+    // const user = useSelector((s) => s.auth.user);
     const onSubmit = async (e) => {
         e.preventDefault();
-        await dispatch(getLogin(form));
+        await dispatch(auth.getLogin(form));
     };
-
+    /*
     React.useEffect(() => {
         const init = async () => {
-            await dispatch(getUser());
+            await dispatch(auth.getUser());
         };
         // При монтировании компонента запросим данные о пользователе
         init();
     }, [dispatch]);
+*/
 
     // if (user) navigate(location?.state?.from || '/');
-    if (user) {
+    /*   if (user) {
         return <Navigate to={location?.state?.from || '/'} />;
     }
+    */
 
     return (
         <div className={`${styles.block} pt-5 text text_type_main-medium`}>

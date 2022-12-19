@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
@@ -16,11 +16,11 @@ import styles from './app.module.css';
 import ForgotPassword from '../../pages/forgot-password';
 import ResetPassword from '../../pages/reset-password';
 import Profile from '../../pages/profile';
-import Logout from '../../pages/logout';
 import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-import { getItems } from '../../services/actions';
+import { getItems } from '../../services/actions/get-items';
+import { checkAuth } from '../../services/actions/auth-functions';
 
 function App() {
     const location = useLocation();
@@ -28,7 +28,20 @@ function App() {
     const background = location.state && location.state.background;
     const onClose = () => navigate(-1);
     const dispatch = useDispatch();
-    React.useEffect(() => dispatch(getItems()), [dispatch]);
+    const authChecked = useSelector((s) => s.auth.authChecked);
+
+    React.useEffect(() => {
+        const init = async () => {
+            // Вызовем запрос getUser и изменим состояние checkedAuth
+            await dispatch(checkAuth());
+        };
+        // При монтировании компонента запросим данные о пользователе
+        init();
+        dispatch(getItems());
+    }, [dispatch]);
+
+    // console.log('render App');
+    if (!authChecked) return null;
 
     return (
         <>
@@ -36,7 +49,7 @@ function App() {
             <main className={styles.main}>
                 <Routes location={background || location}>
                     <Route
-                        path="/"
+                        index
                         element={
                             <DndProvider backend={HTML5Backend}>
                                 <BurgerIngredients />
@@ -44,10 +57,15 @@ function App() {
                             </DndProvider>
                         }
                     />
-                    <Route path="/login" element={<Login />} />
+                    <Route
+                        path="/login"
+                        element={<ProtectedRoute auth={false} />}
+                    >
+                        <Route path="/login" element={<Login />} />
+                    </Route>
                     <Route path="/register" element={<Register />} />
                     <Route
-                        path="/ingredients/:id"
+                        path="ingredients/:id"
                         element={<IngredientDetails />}
                     />
                     <Route
@@ -55,10 +73,9 @@ function App() {
                         element={<ForgotPassword />}
                     />
                     <Route path="/reset-password" element={<ResetPassword />} />
-                    <Route path="/profile" element={<ProtectedRoute />}>
+                    <Route path="/profile" element={<ProtectedRoute auth />}>
                         <Route path="/profile" element={<Profile />} />
                     </Route>
-                    <Route path="/logout" element={<Logout />} />
                     <Route path="*" element={<Route404 />} />
                 </Routes>
                 {background && (

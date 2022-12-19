@@ -3,8 +3,13 @@ import { TOKEN_PATH, API_BASE } from './constants';
 export const checkResponse = (res) =>
     res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 
+export function request(url, options) {
+    // принимает два аргумента: урл и объект опций, как и `fetch`
+    return fetch(url, options).then(checkResponse);
+}
+
 export const refreshToken = () =>
-    fetch(`${API_BASE}${TOKEN_PATH}`, {
+    request(`${API_BASE}${TOKEN_PATH}`, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -13,7 +18,7 @@ export const refreshToken = () =>
         body: JSON.stringify({
             token: localStorage.getItem('refreshToken'),
         }),
-    }).then(checkResponse);
+    });
 
 export const fetchWithRefresh = async (url, options) => {
     try {

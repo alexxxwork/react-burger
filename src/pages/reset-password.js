@@ -6,7 +6,7 @@ import {
     PasswordInput,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getResetPassword } from '../services/actions';
+import { auth } from '../services/actions';
 import styles from './pages.module.css';
 
 function ResetPassword() {
@@ -17,11 +17,11 @@ function ResetPassword() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const err = useSelector((s) => s.password.resetpwdata?.success);
+    const err = useSelector((s) => s.auth.resetpwdata?.success);
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        await dispatch(getResetPassword(form.password, form.token));
+        await dispatch(auth.getResetPassword(form.password, form.token));
         if (!(err || typeof err === 'undefined')) navigate('/');
         return false;
     };

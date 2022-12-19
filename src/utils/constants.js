@@ -10,6 +10,7 @@ export const TOKEN_PATH = '/api/auth/token';
 export const USER_PATH = '/api/auth/user';
 export const API_URL = `${API_BASE}${INGREDIENTS_PATH}`;
 export const ORDER_URL = `${API_BASE}${ORDER_PATH}`;
+export const pp = '';
 
 export const BUN_NAME = 'bun';
 export const SAUCE_NAME = 'sauce';
