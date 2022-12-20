@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import './index.css';
 import App from './components/app/app';
+import store from './services/store';
 // import reportWebVitals from './reportWebVitals.ts';
 
 const root = ReactDOM.createRoot(
@@ -10,7 +13,11 @@ const root = ReactDOM.createRoot(
 root.render(
     // eslint-disable-next-line react/jsx-filename-extension
     <React.StrictMode>
-        <App />
+        <Provider store={store}>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </Provider>
     </React.StrictMode>
 );
 

@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
 import { itemsReducer } from './items';
-import { getItemsReducer } from './get-items';
+import { fetchReducer } from './fetch';
 import { orderReducer } from './order';
+import { getAuthReducer } from './auth';
 
 const rootReducer = combineReducers({
     items: itemsReducer,
     order: orderReducer,
-    fetch: getItemsReducer,
+    fetch: fetchReducer,
+    auth: getAuthReducer,
 });
 
 export default rootReducer;

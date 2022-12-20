@@ -6,14 +6,15 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Price from '../price/price';
 import styles from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import OrderCard from '../order-card/order-card';
-import { getOrder } from '../../services/reducers/order';
 import { BUN_NAME, BLANK_GIF } from '../../utils/constants';
-import { addItem, moveItem, deleteItem } from '../../services/actions';
+import { addItem, moveItem, deleteItem, auth } from '../../services/actions';
+import { getOrder } from '../../services/actions/get-order';
 
 const initialSum = { value: 0 };
 
@@ -21,6 +22,9 @@ function BurgerConstructor() {
     const [showModal, setShowModal] = useState(false);
     const { bun, ingredients } = useSelector((store) => store.items);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const user = useSelector((s) => s.auth.user);
 
     const [, dropTarget] = useDrop({
         accept: ['main', 'sauce'],
@@ -65,22 +69,30 @@ function BurgerConstructor() {
         dispatchSum();
     }, [bun, ingredients]);
 
+    useEffect(() => {
+        dispatch(auth.getUser());
+    }, [dispatch]);
+
     let top = null;
     let bottom = null;
+    const setBuns = (abun) => {
+        if (abun) {
+            top = abun;
+            bottom = { ...top, name: `${top.name} (низ)` };
+            top = { ...top, name: `${top.name} (верх)` };
+        } else {
+            top = {
+                name: '',
+                type: BUN_NAME,
+                price: null,
+                image: BLANK_GIF,
+            };
+            bottom = top;
+        }
+    };
 
-    if (bun) {
-        top = bun;
-        bottom = { ...top, name: `${top.name} (низ)` };
-        top = { ...top, name: `${top.name} (верх)` };
-    } else {
-        top = {
-            name: '',
-            type: BUN_NAME,
-            price: null,
-            image: BLANK_GIF,
-        };
-        bottom = top;
-    }
+    setBuns(bun);
+
     const toggleModal = () => {
         setShowModal((prevState) => !prevState);
     };
@@ -88,7 +100,12 @@ function BurgerConstructor() {
         setShowModal(false);
     };
     const sendOrder = () => {
-        if (bun && ingredients.length) {
+        if (!user) {
+            navigate('/login', {
+                //   replace: true,
+                state: { from: location },
+            });
+        } else if (bun && ingredients.length) {
             dispatch(getOrder(bun, ingredients));
             toggleModal();
         }

@@ -1,15 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
+import { showModal } from '../../services/actions';
 
 function Modal(props) {
-    // eslint-disable-next-line react/prop-types
-    const { children, text, onClose } = props;
+    let { onClose } = props;
+    const { children, text } = props;
+    const dispatch = useDispatch();
     const modalRoot = document.getElementById('modal');
+    const navigate = useNavigate();
+    if (typeof onClose !== 'function') {
+        onClose = () => {
+            navigate(-1);
+            dispatch(showModal(false));
+        };
+    }
 
     useEffect(() => {
         const onPressEsc = (e) => {
@@ -20,7 +31,6 @@ function Modal(props) {
         document.addEventListener('keydown', onPressEsc);
         return () => document.removeEventListener('keydown', onPressEsc);
     }, []);
-
     return ReactDOM.createPortal(
         <>
             <ModalOverlay onClick={onClose} />
