@@ -6,14 +6,9 @@ import {
     EmailInput,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-// @ts-ignore
-import { useAppDispatch } from '../services/store/store.ts';
+import { useAppDispatch } from '../services/store/store';
 import { auth } from '../services/actions';
 import styles from './pages.module.css';
-
-// interface TDispatch extends AnyAction {
-//    func: () => void;
-// }
 
 function ForgotPassword() {
     const [form, setForm] = React.useState({

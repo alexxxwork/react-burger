@@ -12,13 +12,20 @@ import {
     useAppDispatch,
     useAppSelector,
     RootState,
-    // @ts-ignore
-} from '../services/store/store.ts';
+} from '../services/store/store';
 import styles from './pages.module.css';
+
+type TUserForm = {
+    name: string;
+    email: string;
+    password: string;
+};
 
 function Profile() {
     const dispatch = useAppDispatch();
-    const user = useAppSelector((store: RootState) => store.auth.user);
+    const user: TUserForm = useAppSelector<any>(
+        (store: RootState) => store.auth.user
+    );
 
     const [form, setForm] = useState({
         name: user?.name,

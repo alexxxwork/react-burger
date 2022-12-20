@@ -7,8 +7,7 @@ import {
     PasswordInput,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-// @ts-ignore
-import { useAppDispatch } from '../services/store/store.ts';
+import { useAppDispatch } from '../services/store/store';
 import { auth } from '../services/actions';
 import styles from './pages.module.css';
 

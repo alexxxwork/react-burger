@@ -8,8 +8,7 @@ import {
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './pages.module.css';
-// @ts-ignore
-import { useAppDispatch } from '../services/store/store.ts';
+import { useAppDispatch } from '../services/store/store';
 import { auth } from '../services/actions';
 
 function Register() {
