@@ -1,24 +1,32 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
+// import { AnyAction } from 'redux';
 import {
     EmailInput,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+// @ts-ignore
+import { useAppDispatch } from '../services/store/store.ts';
 import { auth } from '../services/actions';
 import styles from './pages.module.css';
+
+// interface TDispatch extends AnyAction {
+//    func: () => void;
+// }
 
 function ForgotPassword() {
     const [form, setForm] = React.useState({
         email: '',
     });
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(auth.getRestorePassword(form.email));
+        // dispatch(auth.getRestorePassword(form.email) as unknown as AnyAction);
         navigate('/reset-password', {
             state: { from: location },
         });

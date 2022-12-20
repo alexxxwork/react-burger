@@ -1,4 +1,9 @@
 import PropTypes from 'prop-types';
+import * as H from 'react-router-dom';
+
+export type TModalState = {
+    background: H.Location;
+};
 
 const ingridientType = PropTypes.shape({
     _id: PropTypes.string.isRequired,

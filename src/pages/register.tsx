@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import {
     Input,
     EmailInput,
@@ -8,6 +8,8 @@ import {
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './pages.module.css';
+// @ts-ignore
+import { useAppDispatch } from '../services/store/store.ts';
 import { auth } from '../services/actions';
 
 function Register() {
@@ -16,9 +18,9 @@ function Register() {
         email: '',
         password: '',
     });
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const onSubmit = async (e) => {
+    const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await dispatch(auth.getRegister(form));
         await dispatch(auth.getLogin(form));

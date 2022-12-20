@@ -151,7 +151,7 @@ export function getUser() {
                 })
                 .catch(() => {});
         dispatch(getUserFailed());
-        return new Promise();
+        return new Promise(() => {});
     };
 }
 export function checkAuth() {

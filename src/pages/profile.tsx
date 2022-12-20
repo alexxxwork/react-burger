@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { AnyAction } from '@reduxjs/toolkit';
 import { Link } from 'react-router-dom';
 import {
     Button,
@@ -7,18 +8,25 @@ import {
     PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { auth } from '../services/actions';
+import {
+    useAppDispatch,
+    useAppSelector,
+    RootState,
+    // @ts-ignore
+} from '../services/store/store.ts';
 import styles from './pages.module.css';
 
 function Profile() {
-    const dispatch = useDispatch();
-    const user = useSelector((s) => s.auth.user);
+    const dispatch = useAppDispatch();
+    const user = useAppSelector((store: RootState) => store.auth.user);
+
     const [form, setForm] = useState({
         name: user?.name,
         email: user?.email,
         password: user?.password,
     });
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(auth.patchUser({ name: form.name }));
     };

@@ -5,7 +5,7 @@ import {
     ConstructorElement,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
-import ingridientType from '../../utils/types';
+import ingridientType from '../../utils/types.ts';
 // import Modal from '../modal/modal';
 import styles from './order-card.module.css';
 // import IngredientDetails from '../ingredient-details/ingredient-details';
