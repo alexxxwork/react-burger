@@ -7,11 +7,11 @@ import {
     PasswordInput,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useAppDispatch } from '../services/store/store';
+import { useAppDispatch } from '../services/store';
 import { auth } from '../services/actions';
 import styles from './pages.module.css';
 
-function Login() {
+function Login(): JSX.Element {
     const [form, setForm] = React.useState({
         email: '',
         password: '',
@@ -21,7 +21,7 @@ function Login() {
     // const location = useLocation();
 
     // const user = useSelector((s) => s.auth.user);
-    const onSubmit = async (e: React.FormEvent) => {
+    const onSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         await dispatch(auth.getLogin(form));
     };

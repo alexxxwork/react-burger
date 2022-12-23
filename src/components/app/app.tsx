@@ -1,9 +1,10 @@
 import React from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
+import { AnyAction } from 'redux';
 
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
@@ -21,27 +22,33 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import { getItems } from '../../services/actions/get-items';
 import { checkAuth } from '../../services/actions/auth-functions';
+import {
+    useAppDispatch,
+    useAppSelector,
+    RootState,
+} from '../../services/store';
 
-function App() {
+function App(): JSX.Element {
     const location = useLocation();
     const navigate = useNavigate();
     const background = location.state && location.state.background;
     const onClose = () => navigate(-1);
-    const dispatch = useDispatch();
-    const authChecked = useSelector((s) => s.auth.authChecked);
+    const dispatch = useAppDispatch();
+    const authChecked = useAppSelector(
+        (store: RootState) => store.auth.authChecked
+    );
 
     React.useEffect(() => {
         const init = async () => {
             // Вызовем запрос getUser и изменим состояние checkedAuth
-            await dispatch(checkAuth());
+            await dispatch(checkAuth() as unknown as AnyAction);
         };
         // При монтировании компонента запросим данные о пользователе
         init();
-        dispatch(getItems());
+        dispatch(getItems() as unknown as AnyAction);
     }, [dispatch]);
 
-    // console.log('render App');
-    if (!authChecked) return null;
+    if (!authChecked) return <div />;
 
     return (
         <>

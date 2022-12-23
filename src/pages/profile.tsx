@@ -8,11 +8,7 @@ import {
     PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { auth } from '../services/actions';
-import {
-    useAppDispatch,
-    useAppSelector,
-    RootState,
-} from '../services/store/store';
+import { useAppDispatch, useAppSelector, RootState } from '../services/store';
 import styles from './pages.module.css';
 
 type TUserForm = {
@@ -21,7 +17,7 @@ type TUserForm = {
     password: string;
 };
 
-function Profile() {
+function Profile(): JSX.Element {
     const dispatch = useAppDispatch();
     const user: TUserForm = useAppSelector<any>(
         (store: RootState) => store.auth.user

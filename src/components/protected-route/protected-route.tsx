@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
+import { useAppSelector, RootState } from '../../services/store';
 
-function ProtectedRoute({ auth }) {
+function ProtectedRoute({ auth }: { auth: boolean }): JSX.Element {
     const location = useLocation();
-    const user = useSelector((s) => s.auth.user);
+    const user = useAppSelector((store: RootState) => store.auth.user);
     const from = location.state?.from || '/';
 
     if (!auth && user) {

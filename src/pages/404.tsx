@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import TRex from '../images/Chromium_T-Rex-error-offline.svg';
 import styles from './pages.module.css';
 
-function Route404() {
+function Route404(): JSX.Element {
     return (
         <div className={`${styles.block} text text_type_main-medium`}>
             <img src={TRex} alt="T-Rex not found" className="p-4" />

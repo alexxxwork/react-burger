@@ -5,7 +5,33 @@ export type TModalState = {
     background: H.Location;
 };
 
-const ingridientType = PropTypes.shape({
+export type TOrderData = {
+    name: string;
+    order: {
+        number: number;
+    };
+    success: boolean;
+    message?: string;
+};
+
+export type TIngridientType = {
+    _id: string;
+    id?: string;
+    index?: number;
+    name: string;
+    type: string;
+    proteins: number;
+    fat: number;
+    carbohydrates: number;
+    calories: number;
+    price: number;
+    image: string;
+    image_mobile: string;
+    image_large: string;
+    __v: number;
+};
+
+export const ingridientType = PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -19,5 +45,3 @@ const ingridientType = PropTypes.shape({
     image_large: PropTypes.string.isRequired,
     __v: PropTypes.number.isRequired,
 });
-
-export default ingridientType;

@@ -1,21 +1,19 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-details.module.css';
-import ingridientType from '../../utils/types';
-// import { getItems } from '../../services/reducers/get-items';
+import { ingridientType, TIngridientType } from '../../utils/types';
+import { useAppSelector, RootState } from '../../services/store';
 
-function IngredientDetails(props) {
+function IngredientDetails(props: { item: TIngridientType }): JSX.Element {
     let { item } = props;
     const { id } = useParams();
-    // const dispatch = useDispatch();
-    // const datalength = useSelector((s) => s.fetch.data.length);
 
-    const { data } = useSelector((s) => s.fetch);
+    const { data } = useAppSelector((store: RootState) => store.fetch);
     if (!item && id && data.length) {
         // eslint-disable-next-line no-underscore-dangle
-        [item] = data.filter((i) => i._id === id);
+        [item] = data.filter((i: TIngridientType) => i._id === id);
     }
     return (
         item && (

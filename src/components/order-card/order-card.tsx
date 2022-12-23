@@ -5,25 +5,45 @@ import {
     ConstructorElement,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
-import ingridientType from '../../utils/types';
+import { Identifier } from 'dnd-core';
 // import Modal from '../modal/modal';
 import styles from './order-card.module.css';
+import { TIngridientType, ingridientType } from '../../utils/types';
 // import IngredientDetails from '../ingredient-details/ingredient-details';
 
-function OrderCard({ item, index, moveCard, deleteCard }) {
-    const ref = useRef(null);
-    const [{ handlerId }, drop] = useDrop({
+type TOrderCardProps = {
+    item: TIngridientType;
+    index: number;
+    moveCard: (a: number, b: number) => void;
+    deleteCard: () => void;
+};
+type THandlerType = {
+    handlerId: Identifier | null;
+};
+
+function OrderCard({
+    item,
+    index,
+    moveCard,
+    deleteCard,
+}: TOrderCardProps): JSX.Element {
+    const ref = useRef<HTMLDivElement>(null);
+    const [{ handlerId }, drop] = useDrop<
+        TIngridientType,
+        unknown,
+        THandlerType
+    >({
         accept: 'ingredient',
         collect(monitor) {
             return {
                 handlerId: monitor.getHandlerId(),
             };
         },
-        hover(i, monitor) {
+        hover(i: TIngridientType, monitor) {
             if (!ref.current) {
                 return;
             }
-            const dragIndex = i.index;
+            const dragIndex: number = i.index!;
             const hoverIndex = index;
             // Don't replace items with themselves
             if (dragIndex === hoverIndex) {
@@ -37,7 +57,7 @@ function OrderCard({ item, index, moveCard, deleteCard }) {
             // Determine mouse position
             const clientOffset = monitor.getClientOffset();
             // Get pixels to the top
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+            const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return;
             }
@@ -56,7 +76,7 @@ function OrderCard({ item, index, moveCard, deleteCard }) {
         type: 'ingredient',
         item: { ...item, index },
         collect: (monitor) => ({
-            opacity: monitor.isDragging ? 0.8 : 1,
+            opacity: monitor.isDragging() ? 0.8 : 1,
         }),
     });
     drag(drop(ref));

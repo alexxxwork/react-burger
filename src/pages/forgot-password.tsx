@@ -6,11 +6,11 @@ import {
     EmailInput,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useAppDispatch } from '../services/store/store';
+import { useAppDispatch } from '../services/store';
 import { auth } from '../services/actions';
 import styles from './pages.module.css';
 
-function ForgotPassword() {
+function ForgotPassword(): JSX.Element {
     const [form, setForm] = React.useState({
         email: '',
     });
@@ -18,7 +18,7 @@ function ForgotPassword() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const onSubmit = (e: React.FormEvent) => {
+    const onSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
         dispatch(auth.getRestorePassword(form.email));
         // dispatch(auth.getRestorePassword(form.email) as unknown as AnyAction);

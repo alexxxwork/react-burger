@@ -8,10 +8,10 @@ import {
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './pages.module.css';
-import { useAppDispatch } from '../services/store/store';
+import { useAppDispatch } from '../services/store';
 import { auth } from '../services/actions';
 
-function Register() {
+function Register(): JSX.Element {
     const [form, setForm] = React.useState({
         name: '',
         email: '',
@@ -19,7 +19,7 @@ function Register() {
     });
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const onSubmit = async (e: React.FormEvent) => {
+    const onSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         await dispatch(auth.getRegister(form));
         await dispatch(auth.getLogin(form));

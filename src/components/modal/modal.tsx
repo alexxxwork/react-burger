@@ -1,30 +1,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { showModal } from '../../services/actions';
+import { useAppDispatch } from '../../services/store';
 
-function Modal(props) {
+type TModalProps = {
+    onClose: () => void;
+    children: JSX.Element;
+    text: string;
+};
+
+function Modal(props: TModalProps): JSX.Element {
     let { onClose } = props;
     const { children, text } = props;
-    const dispatch = useDispatch();
-    const modalRoot = document.getElementById('modal');
+    const dispatch = useAppDispatch();
+    const modalRoot: HTMLElement = document.getElementById('modal')!;
     const navigate = useNavigate();
     if (typeof onClose !== 'function') {
         onClose = () => {
             navigate(-1);
+            // @ts-ignore
             dispatch(showModal(false));
         };
     }
 
     useEffect(() => {
-        const onPressEsc = (e) => {
-            if (e.key === 'Escape') {
+        const onPressEsc = (evt: KeyboardEvent): void => {
+            if (evt.key === 'Escape') {
                 onClose();
             }
         };
