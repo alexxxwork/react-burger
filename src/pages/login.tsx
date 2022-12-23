@@ -1,39 +1,35 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+// import { Link, useLocation, Navigate } from 'react-router-dom';
+// import { useDispatch } from 'react-redux';
 import {
-    Input,
     EmailInput,
     PasswordInput,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './pages.module.css';
+import { useAppDispatch } from '../services/store';
 import { auth } from '../services/actions';
+import styles from './pages.module.css';
 
-function Register() {
+function Login(): JSX.Element {
     const [form, setForm] = React.useState({
-        name: '',
         email: '',
         password: '',
     });
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const onSubmit = async (e) => {
+    const dispatch = useAppDispatch();
+    // const navigate = useNavigate();
+    // const location = useLocation();
+
+    // const user = useSelector((s) => s.auth.user);
+    const onSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        await dispatch(auth.getRegister(form));
         await dispatch(auth.getLogin(form));
-        navigate('/');
     };
+
     return (
         <div className={`${styles.block} pt-5 text text_type_main-medium`}>
             <form onSubmit={onSubmit} className={styles.form}>
-                <div className="p-3">Регистрация</div>
-                <Input
-                    placeholder="Имя"
-                    extraClass="p-3"
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
+                <div className="p-3">Вход</div>
                 <EmailInput
                     placeholder="E-mail"
                     extraClass="p-3"
@@ -44,7 +40,7 @@ function Register() {
                 />
                 <PasswordInput
                     placeholder="Пароль"
-                    extraClass="p-3"
+                    extraClass={`${styles.input} p-3`}
                     value={form.password}
                     onChange={(e) =>
                         setForm({ ...form, password: e.target.value })
@@ -52,22 +48,37 @@ function Register() {
                 />
                 <div className="pt-3 pb-20">
                     <Button htmlType="submit" type="primary" size="medium">
-                        Зарегистрироваться
+                        Войти
                     </Button>
                 </div>
             </form>
             <div
                 className={`${styles.centered} text text_type_main-default text_color_inactive`}
             >
-                <div className="pl-10 pr-2">Уже зарегистрированы?</div>
-                <Link to="/login">
+                <div className="pl-10 pr-2">Вы - новый пользователь?</div>
+                <Link to="/register">
                     <Button
                         htmlType="button"
                         type="secondary"
                         size="medium"
                         extraClass="pl-2 pt-1 pb-1"
                     >
-                        Войти
+                        Зарегистрироваться
+                    </Button>
+                </Link>
+            </div>
+            <div
+                className={`${styles.centered} text text_type_main-default text_color_inactive`}
+            >
+                <div className="pl-10 pr-2">Забыли пароль?</div>
+                <Link to="/forgot-password">
+                    <Button
+                        htmlType="button"
+                        type="secondary"
+                        size="medium"
+                        extraClass="pl-2 pt-1 pb-1"
+                    >
+                        Восстановить пароль
                     </Button>
                 </Link>
             </div>
@@ -75,4 +86,4 @@ function Register() {
     );
 }
 
-export default Register;
+export default Login;

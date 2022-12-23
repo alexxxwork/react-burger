@@ -6,8 +6,8 @@ import * as auth from './auth-functions';
 export { items, auth };
 
 export const moveItem = createAction('items/move_item');
-export const deleteItem = createAction('items/delete_item');
-export const setCurrentItem = createAction('items/set_current');
+export const deleteItem = createAction('items/delete_item', (index) => index);
+export const setCurrentItem = createAction('items/set_current', (item) => item);
 export const clearItems = createAction('order/clear');
 
 export const addItem = createAction('items/add_item', (item) => ({
@@ -17,4 +17,7 @@ export const addItem = createAction('items/add_item', (item) => ({
     },
 }));
 
-export const showModal = createAction('items/SHOW_MODAL');
+export const showModal = createAction(
+    'items/SHOW_MODAL',
+    (isShowModal) => isShowModal
+);

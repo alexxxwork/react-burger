@@ -9,6 +9,7 @@ import {
     showModal,
 } from '../actions';
 import { BUN_NAME } from '../../utils/constants';
+// import { TIngridientType } from '../../utils/types';
 
 export const initialState = {
     currentItem: null,

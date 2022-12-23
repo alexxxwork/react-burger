@@ -9,7 +9,7 @@ import {
 import HeaderElement from '../header-element/header-element';
 import styles from './app-header.module.css';
 
-function AppHeader() {
+function AppHeader(): JSX.Element {
     const isConstructor = !!useMatch({ path: '/', end: true });
     const constructorStyle = isConstructor
         ? styles.element
@@ -62,12 +62,18 @@ function AppHeader() {
                 <div className={styles.right_block}>
                     <NavLink to="/profile" className={profileStyle}>
                         <HeaderElement>
-                            <div className={profileStyle}>
-                                <ProfileIcon
-                                    type={isProfile ? 'primary' : 'secondary'}
-                                />
-                            </div>
-                            <div className={profileStyle}>Личный кабинет</div>
+                            <>
+                                <div className={profileStyle}>
+                                    <ProfileIcon
+                                        type={
+                                            isProfile ? 'primary' : 'secondary'
+                                        }
+                                    />
+                                </div>
+                                <div className={profileStyle}>
+                                    Личный кабинет
+                                </div>
+                            </>
                         </HeaderElement>
                     </NavLink>
                 </div>

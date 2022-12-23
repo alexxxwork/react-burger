@@ -1,33 +1,55 @@
 /* eslint-disable no-underscore-dangle */
 import { useState, useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Card from '../card/card';
 // import { getItems } from '../../services/reducers/get-items';
 import { setCurrentItem, showModal } from '../../services/actions';
 import styles from './burger-ingredients.module.css';
 import { BUN_NAME, SAUCE_NAME, MAIN_NAME } from '../../utils/constants';
+import {
+    useAppDispatch,
+    useAppSelector,
+    RootState,
+} from '../../services/store';
+import { TIngridientType } from '../../utils/types';
 
-function BurgerIngredients() {
+type TStoreItems = {
+    ingredients: Array<TIngridientType>;
+    bun: TIngridientType;
+};
+
+function BurgerIngredients(): JSX.Element {
     const [current, setCurrent] = useState('buns');
-    const { ingredients, bun } = useSelector((s) => s.items);
-    const { data, isLoading, hasError } = useSelector((s) => s.fetch);
-    const refs = { buns: useRef(), main: useRef(), sauce: useRef() };
-    const scroll = useRef();
+    const { ingredients, bun }: TStoreItems = useSelector(
+        (store: RootState) => store.items
+    ) as unknown as TStoreItems;
+    const { data, isLoading, hasError } = useAppSelector(
+        (store: RootState) => store.fetch
+    );
+    const refs = {
+        buns: useRef<HTMLDivElement | null>(null),
+        main: useRef<HTMLDivElement | null>(null),
+        sauce: useRef<HTMLDivElement | null>(null),
+    };
+    const scroll = useRef<HTMLDivElement | null>(null);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const toggleDetails = (item) => {
+    const toggleDetails = (item: TIngridientType) => {
         dispatch(setCurrentItem(item));
         dispatch(showModal(true));
     };
 
     const onScroll = () => {
-        let delta = scroll.current.getBoundingClientRect().top;
+        let delta = scroll.current!.getBoundingClientRect().top;
         let tab = current;
-        Object.keys(refs).forEach((ref) => {
+        Object.keys(refs).forEach((ref: string) => {
             const curDelta = Math.abs(
-                delta - refs[ref].current.getBoundingClientRect().top
+                delta -
+                    refs[
+                        ref as keyof typeof refs
+                    ].current!.getBoundingClientRect().top
             );
             if (curDelta < delta) {
                 delta = curDelta;
@@ -37,17 +59,18 @@ function BurgerIngredients() {
         if (tab !== current) setCurrent(tab);
     };
 
-    const setTab = (tab) => {
-        scroll.current.scrollTo({
+    const setTab = (tab: string) => {
+        scroll.current!.scrollTo({
             left: 0,
             top: ((t) => {
                 switch (t) {
                     case 'sauce':
-                        return refs.buns.current.getBoundingClientRect().height;
+                        return refs.buns.current!.getBoundingClientRect()
+                            .height;
                     case 'main':
                         return (
-                            refs.buns.current.getBoundingClientRect().height +
-                            refs.sauce.current.getBoundingClientRect().height
+                            refs.buns.current!.getBoundingClientRect().height +
+                            refs.sauce.current!.getBoundingClientRect().height
                         );
                     default:
                         return 0;
@@ -74,11 +97,6 @@ function BurgerIngredients() {
             )}
             {!isLoading && !hasError && data.length && (
                 <section className={styles.container}>
-                    {/* isShowModal && currentItem && (
-                        <Modal text="Детали ингредиента" onClose={closeDetails}>
-                            <IngredientDetails item={currentItem} />
-                        </Modal>
-                    ) */}
                     <div
                         className={`${styles.header} text text_type_main-default`}
                     >
@@ -120,8 +138,10 @@ function BurgerIngredients() {
                             </div>
 
                             {data
-                                .filter((i) => i.type === BUN_NAME)
-                                .map((i) => (
+                                .filter(
+                                    (i: TIngridientType) => i.type === BUN_NAME
+                                )
+                                .map((i: TIngridientType) => (
                                     <Card
                                         item={i}
                                         key={i._id}
@@ -138,8 +158,11 @@ function BurgerIngredients() {
                                 Соусы
                             </div>
                             {data
-                                .filter((i) => i.type === SAUCE_NAME)
-                                .map((i) => (
+                                .filter(
+                                    (i: TIngridientType) =>
+                                        i.type === SAUCE_NAME
+                                )
+                                .map((i: TIngridientType) => (
                                     <Card
                                         item={i}
                                         key={i._id}
@@ -160,8 +183,10 @@ function BurgerIngredients() {
                                 Начинки
                             </div>
                             {data
-                                .filter((i) => i.type === MAIN_NAME)
-                                .map((i) => (
+                                .filter(
+                                    (i: TIngridientType) => i.type === MAIN_NAME
+                                )
+                                .map((i: TIngridientType) => (
                                     <Card
                                         item={i}
                                         key={i._id}
@@ -169,7 +194,8 @@ function BurgerIngredients() {
                                         draggable
                                         count={
                                             ingredients.filter(
-                                                (c) => c._id === i._id
+                                                (c: TIngridientType) =>
+                                                    c._id === i._id
                                             ).length
                                         }
                                     />

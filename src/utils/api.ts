@@ -1,9 +1,9 @@
 import { TOKEN_PATH, API_BASE } from './constants';
 
-export const checkResponse = (res) =>
+export const checkResponse = (res: Response): Promise<Response> =>
     res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 
-export function request(url, options) {
+export function request(url: string, options: RequestInit): Promise<Response> {
     // принимает два аргумента: урл и объект опций, как и `fetch`
     return fetch(url, options).then(checkResponse);
 }
@@ -20,14 +20,17 @@ export const refreshToken = () =>
         }),
     });
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (
+    url: string,
+    options: RequestInit
+): Promise<Response> => {
     try {
         const res = await fetch(url, options);
         return await checkResponse(res);
-    } catch (err) {
+    } catch (err: any) {
         if (err.message === 'jwt expired') {
             // || err.message === 'jwt malformed') {
-            const refreshData = await refreshToken(); // обновляем токен
+            const refreshData: any = await refreshToken(); // обновляем токен
             if (!refreshData.success) {
                 return Promise.reject(refreshData);
             }

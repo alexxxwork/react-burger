@@ -1,13 +1,22 @@
 import React from 'react';
 import '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import OrderIcon from '../../images/order_logo.svg';
+import { useAppSelector, RootState } from '../../services/store';
+import { TOrderData } from '../../utils/types';
 import styles from './order-details.module.css';
 
-function OrderDetails() {
-    const { isLoading, hasError, error, data } = useSelector(
-        (store) => store.order
-    );
+type TStoreData = {
+    isLoading: boolean;
+    hasError: boolean;
+    error: string;
+    data: TOrderData;
+};
+
+function OrderDetails(): JSX.Element {
+    const { isLoading, hasError, error, data }: TStoreData = useAppSelector(
+        (store: RootState) => store.order
+    ) as unknown as TStoreData;
     return (
         <div className={`${styles.order_text} text text_type_main-medium`}>
             {isLoading && (

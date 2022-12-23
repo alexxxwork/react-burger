@@ -1,28 +1,35 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import {
     Input,
     PasswordInput,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useAppDispatch, useAppSelector, RootState } from '../services/store';
 import { auth } from '../services/actions';
 import styles from './pages.module.css';
 
-function ResetPassword() {
+type TErororr = {
+    success: boolean;
+};
+
+function ResetPassword(): JSX.Element {
     const [form, setForm] = React.useState({
         password: '',
         token: '',
     });
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const err = useSelector((s) => s.auth.resetpwdata?.success);
+    const err: TErororr = useAppSelector<any>(
+        (store: RootState) => store.auth.resetpwdata
+    );
 
-    const onSubmit = async (e) => {
+    const onSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         await dispatch(auth.getResetPassword(form.password, form.token));
-        if (!(err || typeof err === 'undefined')) navigate('/');
+        if (!(err.success || typeof err.success === 'undefined')) navigate('/');
         return false;
     };
 

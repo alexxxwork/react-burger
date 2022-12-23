@@ -6,10 +6,17 @@ import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 import Price from '../price/price';
-import ingridientType from '../../utils/types';
+import { TIngridientType, ingridientType } from '../../utils/types';
 import styles from './card.module.css';
 
-function Card({ item, onClick, count, draggable }) {
+type TCardProps = {
+    item: TIngridientType;
+    onClick: () => void;
+    count: number;
+    draggable: boolean;
+};
+
+function Card({ item, onClick, count, draggable }: TCardProps): JSX.Element {
     const [{ opacity }, ref] = useDrag({
         type: item.type,
         item: { ...item },

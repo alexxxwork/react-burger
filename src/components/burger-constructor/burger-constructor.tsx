@@ -4,9 +4,10 @@ import {
     ConstructorElement,
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { AnyAction } from 'redux';
 import Price from '../price/price';
 import styles from './burger-constructor.module.css';
 import Modal from '../modal/modal';
@@ -15,16 +16,24 @@ import OrderCard from '../order-card/order-card';
 import { BUN_NAME, BLANK_GIF } from '../../utils/constants';
 import { addItem, moveItem, deleteItem, auth } from '../../services/actions';
 import { getOrder } from '../../services/actions/get-order';
+import { useAppSelector, RootState } from '../../services/store';
+import { TIngridientType } from '../../utils/types';
 
 const initialSum = { value: 0 };
+type TStoreItems = {
+    ingredients: Array<TIngridientType>;
+    bun: TIngridientType;
+};
 
-function BurgerConstructor() {
+function BurgerConstructor(): JSX.Element {
     const [showModal, setShowModal] = useState(false);
-    const { bun, ingredients } = useSelector((store) => store.items);
+    const { bun, ingredients }: TStoreItems = useAppSelector(
+        (store: RootState) => store.items
+    ) as unknown as TStoreItems;
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const user = useSelector((s) => s.auth.user);
+    const user = useAppSelector((store: RootState) => store.auth.user);
 
     const [, dropTarget] = useDrop({
         accept: ['main', 'sauce'],
@@ -70,24 +79,29 @@ function BurgerConstructor() {
     }, [bun, ingredients]);
 
     useEffect(() => {
-        dispatch(auth.getUser());
+        dispatch(auth.getUser() as unknown as AnyAction);
     }, [dispatch]);
 
-    let top = null;
-    let bottom = null;
-    const setBuns = (abun) => {
+    let top: TIngridientType = {
+        name: '',
+        type: BUN_NAME,
+        price: 0,
+        image: BLANK_GIF,
+        _id: '',
+        proteins: 0,
+        fat: 0,
+        carbohydrates: 0,
+        calories: 0,
+        image_mobile: '',
+        image_large: '',
+        __v: 0,
+    };
+    let bottom: TIngridientType = top;
+    const setBuns = (abun: TIngridientType) => {
         if (abun) {
             top = abun;
             bottom = { ...top, name: `${top.name} (низ)` };
             top = { ...top, name: `${top.name} (верх)` };
-        } else {
-            top = {
-                name: '',
-                type: BUN_NAME,
-                price: null,
-                image: BLANK_GIF,
-            };
-            bottom = top;
         }
     };
 
@@ -106,12 +120,13 @@ function BurgerConstructor() {
                 state: { from: location },
             });
         } else if (bun && ingredients.length) {
-            dispatch(getOrder(bun, ingredients));
+            dispatch(getOrder(bun, ingredients) as unknown as AnyAction);
             toggleModal();
         }
     };
     const moveCard = useCallback(
-        (fromIndex, toIndex) => {
+        (fromIndex: number, toIndex: number) => {
+            // @ts-ignore
             dispatch(moveItem({ fromIndex, toIndex }));
         },
         [dispatch]
